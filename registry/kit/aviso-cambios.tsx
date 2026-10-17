@@ -37,11 +37,10 @@ export function AvisoCambiosSinGuardar({
           <AlertDialogTitle>Tienes cambios sin guardar</AlertDialogTitle>
           <AlertDialogDescription>Si sales ahora, se perderán.</AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel autoFocus onClick={onQuedarse}>
-            Seguir editando
-          </AlertDialogCancel>
+        <AlertDialogFooter className="mx-0 mb-0 border-t-0 bg-transparent p-0">
           <AlertDialogAction
+            variant="outline"
+            className="text-destructive hover:text-destructive"
             onClick={() => {
               salir.current = true
               onSalir()
@@ -49,6 +48,9 @@ export function AvisoCambiosSinGuardar({
           >
             Descartar cambios
           </AlertDialogAction>
+          <AlertDialogCancel variant="default" autoFocus onClick={onQuedarse}>
+            Seguir editando
+          </AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

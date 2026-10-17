@@ -22,6 +22,7 @@ import { Iniciales, PrioridadBarras } from "../../registry/kit/marcas"
 import { ORDEN_LISTA } from "../../registry/kit/orden"
 import { PanelDetalle } from "../../registry/kit/panel-detalle"
 import { SelectorPropiedad } from "../../registry/kit/selector-propiedad"
+import type { AparienciaSelector } from "../../registry/kit/selector-propiedad"
 import { Tablero } from "../../registry/kit/tablero"
 import type { CampoSelector, Estado, Prioridad, Tarea } from "../../registry/kit/tipos"
 import { useAvisoSalida } from "../../registry/kit/use-aviso-salida"
@@ -148,7 +149,12 @@ export function PaginaTareas() {
     return accionesTarea(tarea, manejadores(tarea))
   }
 
-  function selectorDe(tarea: Tarea, campo: CampoSelector) {
+  function selectorDe(
+    tarea: Tarea,
+    campo: CampoSelector,
+    apariencia: AparienciaSelector = "suelto",
+    className?: string,
+  ) {
     const persona = RESPONSABLES.find((item) => item.id === tarea.responsableId)
     const mapa = {
       estado: {
@@ -215,6 +221,8 @@ export function PaginaTareas() {
         valorId={actual.valorId}
         placeholder={actual.placeholder}
         complemento={"complemento" in actual ? actual.complemento : undefined}
+        apariencia={apariencia}
+        className={className}
         opciones={actual.opciones}
         abierto={selector?.id === tarea.id && selector.campo === campo}
         onAbiertoChange={(abierto) => setSelector(abierto ? { id: tarea.id, campo } : null)}
@@ -226,21 +234,20 @@ export function PaginaTareas() {
   function fila(tarea: Tarea) {
     return {
       acciones: accionesDe(tarea),
-      izquierda: (
-        <>
-          {selectorDe(tarea, "prioridad")}
-          <span className="shrink-0 text-xs text-muted-foreground">{tarea.id}</span>
-          {selectorDe(tarea, "estado")}
-        </>
-      ),
-      derecha: (
-        <>
-          <span className="hidden text-xs text-muted-foreground md:inline">{tarea.etiqueta}</span>
-          {selectorDe(tarea, "responsable")}
-          <span className="hidden text-xs tabular-nums text-muted-foreground md:inline">{tarea.fecha}</span>
-        </>
-      ),
+      prioridad: selectorDe(tarea, "prioridad", "fila"),
+      estado: selectorDe(tarea, "estado", "fila"),
+      persona: selectorDe(tarea, "responsable", "suelto", "h-8 w-full min-w-0 justify-start px-0"),
     }
+  }
+
+  function propiedad(etiqueta: string, campo: CampoSelector) {
+    if (!abierta) return null
+    return (
+      <div key={campo} className="flex items-center gap-3">
+        <span className="w-28 shrink-0 text-sm text-muted-foreground">{etiqueta}</span>
+        <div className="min-w-0 flex-1">{selectorDe(abierta, campo, "panel")}</div>
+      </div>
+    )
   }
 
   let cuerpo: ReactNode = null
@@ -290,6 +297,10 @@ export function PaginaTareas() {
               abiertaId={abierta?.id}
               onAbrir={(id) => ir({ tarea: id })}
               grupoForzado={forzar}
+              anchoPersona={Math.max(
+                ...RESPONSABLES.map((persona) => persona.nombre.length),
+                "Sin responsable".length,
+              )}
               renderFila={fila}
             />
           )}
@@ -305,11 +316,11 @@ export function PaginaTareas() {
             onEditar={() => setEditandoId(abierta.id)}
             propiedades={
               <>
-                {selectorDe(abierta, "estado")}
-                {selectorDe(abierta, "prioridad")}
-                {selectorDe(abierta, "responsable")}
-                {selectorDe(abierta, "etiqueta")}
-                {selectorDe(abierta, "fecha")}
+                {propiedad("Estado", "estado")}
+                {propiedad("Prioridad", "prioridad")}
+                {propiedad("Responsable", "responsable")}
+                {propiedad("Etiqueta", "etiqueta")}
+                {propiedad("Fecha", "fecha")}
               </>
             }
             formulario={

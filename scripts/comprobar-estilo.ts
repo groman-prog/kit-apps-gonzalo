@@ -109,8 +109,7 @@ export function comprobarTexto(archivo: string, texto: string): Hallazgo[] {
     const fuente = fuentesDeclaradas(linea)
     if (fuente) motivos.push(fuente)
     if (FUENTES_CLASE.test(linea) || /fonts\.googleapis|fonts\.gstatic/.test(linea)) motivos.push("fuente no permitida")
-    // El anexo A nombra Inter en un comentario («más ancha que Inter») y no se puede editar.
-    if (!tokens && NOMBRES_FUENTE.test(linea)) motivos.push("fuente no permitida")
+    if (NOMBRES_FUENTE.test(linea)) motivos.push("fuente no permitida")
     const pesoMal = peso(linea, enFontFace)
     if (pesoMal) motivos.push(pesoMal)
     if (linea.includes("\u00B7")) motivos.push("punto medio")

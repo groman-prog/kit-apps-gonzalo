@@ -92,7 +92,7 @@ function BotonSeccion({
   return (
     <SidebarMenuButton
       isActive={activa}
-      className="h-11 md:h-8"
+      className="h-11 px-0 md:h-8"
       onClick={() => {
         setOpenMobile(false)
         onClick()
@@ -110,7 +110,7 @@ function BotonOcultar() {
     <Button
       type="button"
       variant="ghost"
-      className="h-11 w-full justify-start md:h-8"
+      className="h-11 w-full justify-start rounded-md px-0 md:h-8"
       onClick={() => {
         if (window.innerWidth < 768) setOpenMobile(false)
         else setOpen(false)
@@ -156,13 +156,13 @@ export function MarcoApp({
         className="h-svh max-w-full overflow-hidden"
       >
         <Sidebar collapsible="offcanvas">
-          <SidebarHeader>
-            <div className="flex items-center gap-2 px-2 py-1">
+          <SidebarHeader className="px-3">
+            <div className="flex items-center gap-2 py-1">
               <span aria-hidden className="size-3 shrink-0 rounded-sm bg-primary" />
               <span className="truncate text-sm font-semibold">{nombre}</span>
             </div>
           </SidebarHeader>
-          <SidebarContent>
+          <SidebarContent className="px-3">
             <nav aria-label="Secciones">
               <SidebarMenu>
                 {secciones.map((seccion) => (
@@ -178,7 +178,7 @@ export function MarcoApp({
               </SidebarMenu>
             </nav>
           </SidebarContent>
-          <SidebarFooter>
+          <SidebarFooter className="px-3">
             <BotonOcultar />
             <SidebarMenu>
               <SidebarMenuItem>
@@ -189,7 +189,7 @@ export function MarcoApp({
                 />
               </SidebarMenuItem>
             </SidebarMenu>
-            <p className="px-2 text-sm text-muted-foreground">{usuario}</p>
+            <p className="text-sm text-muted-foreground">{usuario}</p>
           </SidebarFooter>
         </Sidebar>
         <SidebarInset className="min-h-0 min-w-0 overflow-hidden">
@@ -209,9 +209,15 @@ export function MarcoApp({
                 })}
               </BreadcrumbList>
             </Breadcrumb>
-            <Button type="button" variant="outline" className="h-11 shrink-0 md:h-8" onClick={onBuscar}>
+            <Button
+              type="button"
+              variant="outline"
+              className="size-11 shrink-0 px-0 md:h-8 md:w-auto md:px-2.5"
+              aria-label={movil ? "Buscar" : undefined}
+              onClick={onBuscar}
+            >
               <Search />
-              <span>Buscar…</span>
+              <span className="hidden md:inline">Buscar…</span>
               <kbd className="hidden rounded-sm border border-border px-1 text-xs md:inline">
                 {mod} K
               </kbd>

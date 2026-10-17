@@ -70,13 +70,16 @@ export function PanelDetalle({
           <h2 className="mt-1 text-base font-semibold">{tarea.titulo}</h2>
         )}
         {editando && estrecho ? <SheetTitle className="sr-only">{tarea.titulo}</SheetTitle> : null}
-        <div className="mt-4 grid grid-cols-1 gap-3 min-[480px]:grid-cols-2">{propiedades}</div>
         {editando ? null : <p className="mt-4 text-sm">{tarea.descripcion}</p>}
         {editando ? null : (
           <Button type="button" variant="secondary" className="mt-4 h-11 md:h-8" onClick={onEditar}>
             Editar
           </Button>
         )}
+        <section className="mt-6">
+          <h3 className="text-sm font-semibold">Propiedades</h3>
+          <div className="mt-2 flex flex-col gap-2">{propiedades}</div>
+        </section>
         <h3 className="mt-8 text-sm font-semibold">Actividad</h3>
         <ul className="mt-2 flex flex-col gap-2">
           {tarea.actividad.map((entrada, indice) => (

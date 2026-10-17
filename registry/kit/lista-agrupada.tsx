@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import type { ReactNode } from "react"
+import type { CSSProperties, ReactNode } from "react"
 import { ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
@@ -19,6 +19,7 @@ export function ListaAgrupada({
   abiertaId,
   onAbrir,
   grupoForzado,
+  anchoPersona = 14,
   renderFila,
 }: {
   tareas: Tarea[]
@@ -27,7 +28,13 @@ export function ListaAgrupada({
   abiertaId?: string
   onAbrir: (id: string) => void
   grupoForzado?: { estado: Estado; n: number } | null
-  renderFila: (tarea: Tarea) => { acciones: Accion[]; izquierda: ReactNode; derecha: ReactNode }
+  anchoPersona?: number
+  renderFila: (tarea: Tarea) => {
+    acciones: Accion[]
+    prioridad: ReactNode
+    estado: ReactNode
+    persona: ReactNode
+  }
 }) {
   const [cerrados, setCerrados] = useState<Set<Estado>>(() => new Set(PLEGADOS_AL_INICIO))
   useEffect(() => {
@@ -41,16 +48,24 @@ export function ListaAgrupada({
   }, [grupoForzado])
 
   const filtro = consulta.trim().toLowerCase()
-  const visibles = tareas.filter(
-    (tarea) => !tarea.archivada && (filtro === "" || tarea.titulo.toLowerCase().includes(filtro)),
+  const presentes = tareas.filter((tarea) => !tarea.archivada)
+  const visibles = presentes.filter(
+    (tarea) => filtro === "" || tarea.titulo.toLowerCase().includes(filtro),
   )
+  const largo = (valores: string[]) => valores.reduce((max, valor) => Math.max(max, valor.length), 1)
+  const columnas = {
+    "--col-codigo": `${largo(presentes.map((tarea) => tarea.id))}ch`,
+    "--col-etiqueta": `${largo(presentes.map((tarea) => tarea.etiqueta))}ch`,
+    "--col-persona": `calc(2rem + ${anchoPersona}ch)`,
+    "--col-fecha": `${largo(presentes.map((tarea) => tarea.fecha))}ch`,
+  } as CSSProperties
   const grupos = ORDEN_LISTA.map((estado) => ({
     estado,
     tareas: visibles.filter((tarea) => tarea.estado === estado),
   })).filter((grupo) => grupo.tareas.length > 0)
 
   return (
-    <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col" style={columnas}>
       <div className="px-3 pb-2">
         <Label htmlFor="buscar-lista" className="sr-only">
           Buscar en la lista
@@ -98,7 +113,9 @@ export function ListaAgrupada({
                         <MenuContextual key={tarea.id} acciones={fila.acciones}>
                           <li
                             className={cn(
-                              "relative flex min-h-11 cursor-default items-center gap-2 px-3 hover:bg-accent md:min-h-9",
+                              "relative grid min-h-11 min-w-0 cursor-default items-center gap-x-2 px-3 hover:bg-accent md:min-h-9",
+                              "grid-cols-[16px_var(--col-codigo)_16px_minmax(0,1fr)_auto]",
+                              "md:grid-cols-[16px_var(--col-codigo)_16px_minmax(0,1fr)_var(--col-etiqueta)_var(--col-persona)_var(--col-fecha)_auto]",
                               seleccionada && "bg-accent",
                             )}
                             onClick={() => {
@@ -108,9 +125,28 @@ export function ListaAgrupada({
                             {seleccionada ? (
                               <span className="absolute inset-y-0 left-0 w-0.5 bg-primary" />
                             ) : null}
-                            {fila.izquierda}
-                            <span className="min-w-0 flex-1 truncate text-sm font-medium">{tarea.titulo}</span>
-                            {fila.derecha}
+                            <span data-icono-prioridad className="flex size-4 items-center justify-center">
+                              {fila.prioridad}
+                            </span>
+                            <span className="truncate text-left text-xs tabular-nums text-muted-foreground">
+                              {tarea.id}
+                            </span>
+                            <span data-icono-estado className="flex size-4 items-center justify-center">
+                              {fila.estado}
+                            </span>
+                            <span data-titulo className="min-w-0 truncate text-sm font-medium">
+                              {tarea.titulo}
+                            </span>
+                            <span className="hidden truncate text-xs text-muted-foreground md:block">
+                              {tarea.etiqueta}
+                            </span>
+                            <span className="hidden min-w-0 md:block">{fila.persona}</span>
+                            <span
+                              data-fecha
+                              className="hidden w-full truncate text-right text-xs tabular-nums text-muted-foreground md:block"
+                            >
+                              {tarea.fecha}
+                            </span>
                             <MenuAcciones acciones={fila.acciones} />
                           </li>
                         </MenuContextual>

@@ -26,7 +26,7 @@ export function Tablero({
   )
   return (
     <div
-      className="flex min-h-0 min-w-0 flex-1 snap-x snap-mandatory gap-3 overflow-x-auto px-3 pb-3"
+      className="flex min-h-0 min-w-0 flex-1 snap-x snap-mandatory scroll-pl-3 gap-3 overflow-x-auto px-3 pb-3 md:snap-none"
       tabIndex={0}
       aria-label="Tablero de tareas"
     >
@@ -36,7 +36,7 @@ export function Tablero({
           <section
             key={estado}
             aria-label={ETIQUETA_ESTADO[estado]}
-            className="flex w-[85%] shrink-0 snap-start flex-col md:w-72"
+            className="flex w-[85%] shrink-0 snap-start flex-col md:w-[calc((100%-2.25rem)/4)]"
           >
             <h2 className="flex h-11 items-center gap-2 md:h-8">
               <EstadoIcono estado={estado} />
