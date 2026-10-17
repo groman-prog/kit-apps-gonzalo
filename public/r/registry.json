@@ -1,0 +1,365 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "kit-apps-gonzalo",
+  "homepage": "https://github.com/groman-prog/kit-apps-gonzalo",
+  "items": [
+    {
+      "name": "tema-gonzalo",
+      "type": "registry:item",
+      "title": "Tema de Gonzalo",
+      "description": "Tokens de color y las @font-face de Lexend y Cifras GR.",
+      "docs": "Importa src/styles/tokens.css en tu CSS principal y ejecuta scripts/generar-fuentes.py.",
+      "files": [
+        {
+          "path": "src/styles/tokens.css",
+          "type": "registry:file",
+          "target": "~/src/styles/tokens.css"
+        },
+        {
+          "path": "src/styles/fuentes.css",
+          "type": "registry:file",
+          "target": "~/src/styles/fuentes.css"
+        }
+      ]
+    },
+    {
+      "name": "fuentes",
+      "type": "registry:file",
+      "title": "Fuentes autoalojadas",
+      "description": "Script que genera Lexend y Cifras GR en public/fonts.",
+      "files": [
+        {
+          "path": "scripts/generar-fuentes.py",
+          "type": "registry:file",
+          "target": "~/scripts/generar-fuentes.py"
+        }
+      ]
+    },
+    {
+      "name": "estado-icono",
+      "type": "registry:component",
+      "title": "Icono de estado",
+      "description": "Círculo de estado de una tarea.",
+      "files": [
+        {
+          "path": "registry/kit/estado-icono.tsx",
+          "type": "registry:component",
+          "target": "~/src/components/kit/estado-icono.tsx"
+        }
+      ]
+    },
+    {
+      "name": "atajos",
+      "type": "registry:lib",
+      "title": "Atajos de teclado",
+      "description": "Detecta Ctrl o Comando y compone atajos.",
+      "files": [
+        {
+          "path": "registry/kit/atajos.ts",
+          "type": "registry:lib",
+          "target": "~/src/components/kit/atajos.ts"
+        }
+      ]
+    },
+    {
+      "name": "vacio-dibujo",
+      "type": "registry:component",
+      "title": "Dibujo de vacío",
+      "description": "Ilustración de la marca para el vacío de primer uso.",
+      "files": [
+        {
+          "path": "registry/kit/vacio-dibujo.tsx",
+          "type": "registry:component",
+          "target": "~/src/components/kit/vacio-dibujo.tsx"
+        }
+      ]
+    },
+    {
+      "name": "acciones",
+      "type": "registry:block",
+      "title": "Acciones de la tarea",
+      "description": "Lista única de acciones, menú …, menú contextual, confirmación de borrado y cambio menor con deshacer.",
+      "dependencies": ["lucide-react", "sonner"],
+      "registryDependencies": ["button", "dropdown-menu", "context-menu", "alert-dialog"],
+      "files": [
+        {
+          "path": "registry/kit/acciones.tsx",
+          "type": "registry:component",
+          "target": "~/src/components/kit/acciones.tsx"
+        },
+        {
+          "path": "registry/kit/use-cambio-menor.ts",
+          "type": "registry:hook",
+          "target": "~/src/components/kit/use-cambio-menor.ts"
+        }
+      ]
+    },
+    {
+      "name": "estados-vista",
+      "type": "registry:component",
+      "title": "Estados de la vista",
+      "description": "Cargando, error, vacío de primer uso y vacío por filtro.",
+      "registryDependencies": [
+        "button",
+        "empty",
+        "groman-prog/kit-apps-gonzalo/vacio-dibujo"
+      ],
+      "files": [
+        {
+          "path": "registry/kit/estados-vista.tsx",
+          "type": "registry:component",
+          "target": "~/src/components/kit/estados-vista.tsx"
+        }
+      ]
+    },
+    {
+      "name": "conmutador-vista",
+      "type": "registry:component",
+      "title": "Conmutador de vista",
+      "description": "Cambia entre lista y tablero.",
+      "registryDependencies": ["toggle", "toggle-group"],
+      "files": [
+        {
+          "path": "registry/kit/conmutador-vista.tsx",
+          "type": "registry:component",
+          "target": "~/src/components/kit/conmutador-vista.tsx"
+        }
+      ]
+    },
+    {
+      "name": "selector-propiedad",
+      "type": "registry:component",
+      "title": "Selector de propiedad",
+      "description": "Botón fantasma que cambia una propiedad al elegir, en popover o en panel inferior.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [
+        "button",
+        "command",
+        "popover",
+        "drawer",
+        "groman-prog/kit-apps-gonzalo/acciones"
+      ],
+      "files": [
+        {
+          "path": "registry/kit/selector-propiedad.tsx",
+          "type": "registry:component",
+          "target": "~/src/components/kit/selector-propiedad.tsx"
+        },
+        {
+          "path": "registry/kit/use-medio.ts",
+          "type": "registry:hook",
+          "target": "~/src/components/kit/use-medio.ts"
+        },
+        {
+          "path": "registry/kit/marcas.tsx",
+          "type": "registry:component",
+          "target": "~/src/components/kit/marcas.tsx"
+        }
+      ]
+    },
+    {
+      "name": "formulario-registro",
+      "type": "registry:block",
+      "title": "Formulario de registro",
+      "description": "Alta o edición con Guardar, validación y aviso al salir sin guardar.",
+      "dependencies": ["lucide-react", "sonner"],
+      "registryDependencies": ["button", "input", "textarea", "label", "alert-dialog"],
+      "files": [
+        {
+          "path": "registry/kit/formulario-registro.tsx",
+          "type": "registry:component",
+          "target": "~/src/components/kit/formulario-registro.tsx"
+        },
+        {
+          "path": "registry/kit/aviso-cambios.tsx",
+          "type": "registry:component",
+          "target": "~/src/components/kit/aviso-cambios.tsx"
+        },
+        {
+          "path": "registry/kit/use-aviso-salida.ts",
+          "type": "registry:hook",
+          "target": "~/src/components/kit/use-aviso-salida.ts"
+        }
+      ]
+    },
+    {
+      "name": "lista-agrupada",
+      "type": "registry:block",
+      "title": "Lista agrupada",
+      "description": "Tareas agrupadas por estado, con búsqueda y filas accionables.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [
+        "input",
+        "label",
+        "groman-prog/kit-apps-gonzalo/estado-icono",
+        "groman-prog/kit-apps-gonzalo/acciones",
+        "groman-prog/kit-apps-gonzalo/estados-vista"
+      ],
+      "files": [
+        {
+          "path": "registry/kit/lista-agrupada.tsx",
+          "type": "registry:component",
+          "target": "~/src/components/kit/lista-agrupada.tsx"
+        },
+        {
+          "path": "registry/kit/tipos.ts",
+          "type": "registry:lib",
+          "target": "~/src/components/kit/tipos.ts"
+        },
+        {
+          "path": "registry/kit/etiquetas.ts",
+          "type": "registry:lib",
+          "target": "~/src/components/kit/etiquetas.ts"
+        },
+        {
+          "path": "registry/kit/orden.ts",
+          "type": "registry:lib",
+          "target": "~/src/components/kit/orden.ts"
+        }
+      ]
+    },
+    {
+      "name": "tablero",
+      "type": "registry:block",
+      "title": "Tablero",
+      "description": "Una columna por estado, con desplazamiento horizontal en móvil.",
+      "registryDependencies": [
+        "groman-prog/kit-apps-gonzalo/estado-icono",
+        "groman-prog/kit-apps-gonzalo/acciones"
+      ],
+      "files": [
+        {
+          "path": "registry/kit/tablero.tsx",
+          "type": "registry:component",
+          "target": "~/src/components/kit/tablero.tsx"
+        },
+        {
+          "path": "registry/kit/tipos.ts",
+          "type": "registry:lib",
+          "target": "~/src/components/kit/tipos.ts"
+        },
+        {
+          "path": "registry/kit/etiquetas.ts",
+          "type": "registry:lib",
+          "target": "~/src/components/kit/etiquetas.ts"
+        },
+        {
+          "path": "registry/kit/orden.ts",
+          "type": "registry:lib",
+          "target": "~/src/components/kit/orden.ts"
+        }
+      ]
+    },
+    {
+      "name": "panel-detalle",
+      "type": "registry:block",
+      "title": "Panel de detalle",
+      "description": "Detalle de la tarea a la derecha, o a pantalla completa en móvil.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": [
+        "button",
+        "sheet",
+        "groman-prog/kit-apps-gonzalo/estado-icono",
+        "groman-prog/kit-apps-gonzalo/acciones"
+      ],
+      "files": [
+        {
+          "path": "registry/kit/panel-detalle.tsx",
+          "type": "registry:component",
+          "target": "~/src/components/kit/panel-detalle.tsx"
+        },
+        {
+          "path": "registry/kit/tipos.ts",
+          "type": "registry:lib",
+          "target": "~/src/components/kit/tipos.ts"
+        },
+        {
+          "path": "registry/kit/etiquetas.ts",
+          "type": "registry:lib",
+          "target": "~/src/components/kit/etiquetas.ts"
+        },
+        {
+          "path": "registry/kit/use-medio.ts",
+          "type": "registry:hook",
+          "target": "~/src/components/kit/use-medio.ts"
+        }
+      ]
+    },
+    {
+      "name": "marco-app",
+      "type": "registry:block",
+      "title": "Marco de la aplicación",
+      "description": "Barra lateral, cabecera, migas de pan y toasts.",
+      "dependencies": ["lucide-react", "sonner"],
+      "registryDependencies": [
+        "button",
+        "sidebar",
+        "sheet",
+        "tooltip",
+        "breadcrumb",
+        "command",
+        "sonner",
+        "groman-prog/kit-apps-gonzalo/atajos",
+        "groman-prog/kit-apps-gonzalo/acciones"
+      ],
+      "files": [
+        {
+          "path": "registry/kit/marco-app.tsx",
+          "type": "registry:component",
+          "target": "~/src/components/kit/marco-app.tsx"
+        },
+        {
+          "path": "registry/kit/use-medio.ts",
+          "type": "registry:hook",
+          "target": "~/src/components/kit/use-medio.ts"
+        },
+        {
+          "path": "registry/kit/buscador.tsx",
+          "type": "registry:component",
+          "target": "~/src/components/kit/buscador.tsx"
+        }
+      ]
+    },
+    {
+      "name": "reglas-agentes",
+      "type": "registry:item",
+      "title": "Reglas para agentes",
+      "description": "Instrucciones del kit y la guía de diseño para quien lo instala.",
+      "files": [
+        {
+          "path": "plantillas/AGENTS.consumidor.md",
+          "type": "registry:file",
+          "target": "~/docs/kit.md"
+        },
+        {
+          "path": "docs/diseno.md",
+          "type": "registry:file",
+          "target": "~/docs/diseno.md"
+        }
+      ]
+    },
+    {
+      "name": "kit-completo",
+      "type": "registry:item",
+      "title": "Kit completo",
+      "description": "Todos los componentes, el tema, las fuentes y las reglas.",
+      "registryDependencies": [
+        "groman-prog/kit-apps-gonzalo/tema-gonzalo",
+        "groman-prog/kit-apps-gonzalo/fuentes",
+        "groman-prog/kit-apps-gonzalo/estado-icono",
+        "groman-prog/kit-apps-gonzalo/atajos",
+        "groman-prog/kit-apps-gonzalo/vacio-dibujo",
+        "groman-prog/kit-apps-gonzalo/marco-app",
+        "groman-prog/kit-apps-gonzalo/lista-agrupada",
+        "groman-prog/kit-apps-gonzalo/tablero",
+        "groman-prog/kit-apps-gonzalo/conmutador-vista",
+        "groman-prog/kit-apps-gonzalo/panel-detalle",
+        "groman-prog/kit-apps-gonzalo/selector-propiedad",
+        "groman-prog/kit-apps-gonzalo/formulario-registro",
+        "groman-prog/kit-apps-gonzalo/acciones",
+        "groman-prog/kit-apps-gonzalo/estados-vista",
+        "groman-prog/kit-apps-gonzalo/reglas-agentes"
+      ]
+    }
+  ]
+}

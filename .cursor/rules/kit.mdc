@@ -1,0 +1,7 @@
+---
+description: Estándar visual y de uso del kit de Gonzalo Román
+globs: registry/**/*.tsx, src/**/*.tsx, src/**/*.css
+alwaysApply: false
+---
+Lee y cumple docs/diseno.md. Usa los componentes de registry/kit; no los reimplementes.
+Antes de dar algo por terminado: bun run comprobar:estilo && bun run e2e.

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "estados-vista",
+  "title": "Estados de la vista",
+  "description": "Cargando, error, vacío de primer uso y vacío por filtro.",
+  "registryDependencies": [
+    "button",
+    "empty",
+    "groman-prog/kit-apps-gonzalo/vacio-dibujo"
+  ],
+  "files": [
+    {
+      "path": "registry/kit/estados-vista.tsx",
+      "content": "import { Button } from \"@/components/ui/button\"\nimport { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from \"@/components/ui/empty\"\nimport { VacioDibujo } from \"./vacio-dibujo\"\n\nexport function CargandoLista() {\n  return (\n    <div aria-busy=\"true\" className=\"flex flex-col gap-2 p-3\">\n      <p className=\"sr-only\">Cargando la lista.</p>\n      {Array.from({ length: 8 }, (_, indice) => (\n        <div key={indice} className=\"h-11 rounded-md bg-muted\" />\n      ))}\n    </div>\n  )\n}\n\nexport function ErrorCarga({ onReintentar }: { onReintentar: () => void }) {\n  return (\n    <div className=\"m-3 flex flex-col items-start gap-3 rounded-md bg-secondary p-6\">\n      <h2 className=\"text-base font-semibold text-destructive\">No se ha podido cargar la lista.</h2>\n      <p className=\"text-sm\">Comprueba la conexión y vuelve a intentarlo.</p>\n      <Button type=\"button\" variant=\"outline\" onClick={onReintentar}>\n        Reintentar\n      </Button>\n    </div>\n  )\n}\n\nexport function VacioPrimerUso({ onCrear }: { onCrear: () => void }) {\n  return (\n    <Empty className=\"border-0\">\n      <EmptyHeader>\n        <EmptyMedia>\n          <VacioDibujo />\n        </EmptyMedia>\n        <EmptyTitle>Todavía no hay tareas.</EmptyTitle>\n        <EmptyDescription>Crea la primera para empezar a organizar el trabajo.</EmptyDescription>\n      </EmptyHeader>\n      <EmptyContent>\n        <Button type=\"button\" onClick={onCrear}>\n          Nueva tarea\n        </Button>\n      </EmptyContent>\n    </Empty>\n  )\n}\n\nexport function VacioFiltro({ onBorrar }: { onBorrar: () => void }) {\n  return (\n    <Empty className=\"border-0\">\n      <EmptyHeader>\n        <EmptyTitle>No hay tareas que coincidan con la búsqueda.</EmptyTitle>\n      </EmptyHeader>\n      <EmptyContent>\n        <Button type=\"button\" variant=\"outline\" onClick={onBorrar}>\n          Borrar búsqueda\n        </Button>\n      </EmptyContent>\n    </Empty>\n  )\n}\n",
+      "type": "registry:component",
+      "target": "~/src/components/kit/estados-vista.tsx"
+    }
+  ],
+  "type": "registry:component"
+}
