@@ -27,3 +27,19 @@ test("el título y el estado de cada fila empiezan en la misma x", async ({ page
   if (info.project.name === "movil") return
   mismaPosicion(await bordes(page, "[data-fecha]", "right"))
 })
+
+test("en cada columna del tablero el título de las tarjetas empieza en la misma x", async ({ page }) => {
+  await page.goto("/tareas?vista=tablero")
+  await expect(page.getByRole("region", { name: "Por hacer", exact: true })).toBeVisible()
+  await page.evaluate(() => document.fonts.ready)
+  const columnas = ["Sin revisar", "Por hacer", "En curso", "En revisión", "Hecha", "Bloqueada", "Cancelada"]
+  let comprobadas = 0
+  for (const nombre of columnas) {
+    const titulos = page.getByRole("region", { name: nombre, exact: true }).locator("[data-titulo]")
+    const total = await titulos.count()
+    if (total < 2) continue
+    mismaPosicion(await bordes(page, `[aria-label="${nombre}"] [data-titulo]`, "x"))
+    comprobadas += 1
+  }
+  expect(comprobadas).toBeGreaterThan(0)
+})

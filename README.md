@@ -21,13 +21,13 @@ npx shadcn@latest add groman-prog/kit-apps-gonzalo/lista-agrupada
 Para fijar esta versión:
 
 ```bash
-npx shadcn@latest add groman-prog/kit-apps-gonzalo/lista-agrupada#v0.1.0
+npx shadcn@latest add groman-prog/kit-apps-gonzalo/lista-agrupada#v0.1.1
 ```
 
 El kit entero:
 
 ```bash
-npx shadcn@latest add groman-prog/kit-apps-gonzalo/kit-completo#v0.1.0
+npx shadcn@latest add groman-prog/kit-apps-gonzalo/kit-completo#v0.1.1
 ```
 
 Después importa `src/styles/tokens.css` y `src/styles/fuentes.css` en tu CSS principal.

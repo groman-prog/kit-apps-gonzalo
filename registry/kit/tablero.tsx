@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import type { CSSProperties, ReactNode } from "react"
 import { cn } from "@/lib/utils"
 import { EstadoIcono } from "./estado-icono"
 import { ETIQUETA_ESTADO } from "./etiquetas"
@@ -21,12 +21,15 @@ export function Tablero({
   renderTarjeta: (tarea: Tarea) => { acciones: Accion[]; controles: ReactNode }
 }) {
   const filtro = consulta.trim().toLowerCase()
-  const visibles = tareas.filter(
-    (tarea) => !tarea.archivada && (filtro === "" || tarea.titulo.toLowerCase().includes(filtro)),
+  const presentes = tareas.filter((tarea) => !tarea.archivada)
+  const anchoCodigo = presentes.reduce((max, tarea) => Math.max(max, tarea.id.length), 1)
+  const visibles = presentes.filter(
+    (tarea) => filtro === "" || tarea.titulo.toLowerCase().includes(filtro),
   )
   return (
     <div
       className="flex min-h-0 min-w-0 flex-1 snap-x snap-mandatory scroll-pl-3 gap-3 overflow-x-auto px-3 pb-3 md:snap-none"
+      style={{ "--col-codigo": `${anchoCodigo}ch` } as CSSProperties}
       tabIndex={0}
       aria-label="Tablero de tareas"
     >
@@ -59,9 +62,13 @@ export function Tablero({
                       }}
                     >
                       {seleccionada ? <span className="absolute inset-y-0 left-0 w-0.5 bg-primary" /> : null}
-                      <div className="flex items-start gap-2">
-                        <span className="text-xs text-muted-foreground">{tarea.id}</span>
-                        <span className="min-w-0 flex-1 text-sm font-medium">{tarea.titulo}</span>
+                      <div className="grid grid-cols-[var(--col-codigo)_minmax(0,1fr)_auto] items-start gap-2">
+                        <span className="min-w-0 truncate text-left text-xs tabular-nums text-muted-foreground">
+                          {tarea.id}
+                        </span>
+                        <span data-titulo className="min-w-0 truncate text-sm font-medium">
+                          {tarea.titulo}
+                        </span>
                         <MenuAcciones acciones={tarjeta.acciones} />
                       </div>
                       <div className="mt-2 flex items-center gap-2" onClick={(evento) => evento.stopPropagation()}>
