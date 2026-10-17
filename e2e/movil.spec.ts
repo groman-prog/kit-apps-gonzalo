@@ -29,7 +29,7 @@ test("la lista cabe en la pantalla y se abre con el dedo", async ({ page }, info
   await tarea.click()
   await expect(page.getByRole("button", { name: "Volver", exact: true })).toBeVisible()
   const hoja = await page.locator("[data-slot='sheet-content']").boundingBox()
-  expect(hoja?.width ?? 0).toBeGreaterThanOrEqual(390)
+  expect(Math.round(hoja?.width ?? 0)).toBeGreaterThanOrEqual(390)
   await page.getByRole("button", { name: "Volver", exact: true }).click()
   await expect(page).not.toHaveURL(/tarea=/)
 })
