@@ -283,7 +283,7 @@ export function PaginaTareas() {
                 acciones: accionesDe(tarea),
                 controles: (
                   <>
-                    {selectorDe(tarea, "estado")}
+                    {selectorDe(tarea, "estado", "fila")}
                     {selectorDe(tarea, "responsable")}
                   </>
                 ),
