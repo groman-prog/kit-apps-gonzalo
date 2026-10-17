@@ -1,0 +1,37 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tablero",
+  "title": "Tablero",
+  "description": "Una columna por estado, con desplazamiento horizontal en móvil.",
+  "registryDependencies": [
+    "groman-prog/kit-apps-gonzalo/estado-icono",
+    "groman-prog/kit-apps-gonzalo/acciones"
+  ],
+  "files": [
+    {
+      "path": "registry/kit/tablero.tsx",
+      "content": "import type { ReactNode } from \"react\"\nimport { cn } from \"@/lib/utils\"\nimport { EstadoIcono } from \"./estado-icono\"\nimport { ETIQUETA_ESTADO } from \"./etiquetas\"\nimport { ORDEN_TABLERO } from \"./orden\"\nimport type { Tarea } from \"./tipos\"\nimport { MenuAcciones, MenuContextual, aperturaPermitida } from \"./acciones\"\nimport type { Accion } from \"./acciones\"\n\nexport function Tablero({\n  tareas,\n  consulta,\n  abiertaId,\n  onAbrir,\n  renderTarjeta,\n}: {\n  tareas: Tarea[]\n  consulta: string\n  abiertaId?: string\n  onAbrir: (id: string) => void\n  renderTarjeta: (tarea: Tarea) => { acciones: Accion[]; controles: ReactNode }\n}) {\n  const filtro = consulta.trim().toLowerCase()\n  const visibles = tareas.filter(\n    (tarea) => !tarea.archivada && (filtro === \"\" || tarea.titulo.toLowerCase().includes(filtro)),\n  )\n  return (\n    <div\n      className=\"flex min-h-0 min-w-0 flex-1 snap-x snap-mandatory gap-3 overflow-x-auto px-3 pb-3\"\n      tabIndex={0}\n      aria-label=\"Tablero de tareas\"\n    >\n      {ORDEN_TABLERO.map((estado) => {\n        const columna = visibles.filter((tarea) => tarea.estado === estado)\n        return (\n          <section\n            key={estado}\n            aria-label={ETIQUETA_ESTADO[estado]}\n            className=\"flex w-[85%] shrink-0 snap-start flex-col md:w-72\"\n          >\n            <h2 className=\"flex h-11 items-center gap-2 md:h-8\">\n              <EstadoIcono estado={estado} />\n              <span className=\"text-sm font-medium\">{ETIQUETA_ESTADO[estado]}</span>\n              <span className=\"text-sm tabular-nums text-muted-foreground\">{columna.length}</span>\n            </h2>\n            <ul className=\"flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto\">\n              {columna.map((tarea) => {\n                const tarjeta = renderTarjeta(tarea)\n                const seleccionada = tarea.id === abiertaId\n                return (\n                  <MenuContextual key={tarea.id} acciones={tarjeta.acciones}>\n                    <li\n                      className={cn(\n                        \"relative rounded-md border border-border bg-background p-2\",\n                        seleccionada && \"bg-accent\",\n                      )}\n                      onClick={() => {\n                        if (aperturaPermitida()) onAbrir(tarea.id)\n                      }}\n                    >\n                      {seleccionada ? <span className=\"absolute inset-y-0 left-0 w-0.5 bg-primary\" /> : null}\n                      <div className=\"flex items-start gap-2\">\n                        <span className=\"text-xs text-muted-foreground\">{tarea.id}</span>\n                        <span className=\"min-w-0 flex-1 text-sm font-medium\">{tarea.titulo}</span>\n                        <MenuAcciones acciones={tarjeta.acciones} />\n                      </div>\n                      <div className=\"mt-2 flex items-center gap-2\" onClick={(evento) => evento.stopPropagation()}>\n                        {tarjeta.controles}\n                      </div>\n                    </li>\n                  </MenuContextual>\n                )\n              })}\n            </ul>\n          </section>\n        )\n      })}\n    </div>\n  )\n}\n",
+      "type": "registry:component",
+      "target": "~/src/components/kit/tablero.tsx"
+    },
+    {
+      "path": "registry/kit/tipos.ts",
+      "content": "export type Estado =\n  | \"sinrevisar\"\n  | \"porhacer\"\n  | \"curso\"\n  | \"revision\"\n  | \"hecha\"\n  | \"bloqueada\"\n  | \"cancelada\"\n\nexport type Prioridad = \"ninguna\" | \"baja\" | \"media\" | \"alta\" | \"urgente\"\n\nexport type Actividad = {\n  hora: string\n  texto: string\n  desde?: Estado\n  hasta?: Estado\n}\n\nexport type Tarea = {\n  id: string\n  titulo: string\n  descripcion: string\n  estado: Estado\n  prioridad: Prioridad\n  responsableId: string\n  etiqueta: string\n  fecha: string\n  archivada: boolean\n  actividad: Actividad[]\n}\n\nexport type Responsable = {\n  id: string\n  nombre: string\n  iniciales: string\n}\n\nexport type CampoSelector = \"estado\" | \"prioridad\" | \"responsable\" | \"etiqueta\" | \"fecha\"\n",
+      "type": "registry:lib",
+      "target": "~/src/components/kit/tipos.ts"
+    },
+    {
+      "path": "registry/kit/etiquetas.ts",
+      "content": "import type { Estado, Prioridad } from \"./tipos\"\n\nexport const ETIQUETA_ESTADO: Record<Estado, string> = {\n  sinrevisar: \"Sin revisar\",\n  porhacer: \"Por hacer\",\n  curso: \"En curso\",\n  revision: \"En revisión\",\n  hecha: \"Hecha\",\n  bloqueada: \"Bloqueada\",\n  cancelada: \"Cancelada\",\n}\n\nexport const ETIQUETA_PRIORIDAD: Record<Prioridad, string> = {\n  ninguna: \"Ninguna\",\n  baja: \"Baja\",\n  media: \"Media\",\n  alta: \"Alta\",\n  urgente: \"Urgente\",\n}\n\nexport const NIVEL_PRIORIDAD: Record<Prioridad, number> = {\n  ninguna: 0,\n  baja: 1,\n  media: 2,\n  alta: 3,\n  urgente: 4,\n}\n\nexport const PRIORIDADES: Prioridad[] = [\"ninguna\", \"baja\", \"media\", \"alta\", \"urgente\"]\n",
+      "type": "registry:lib",
+      "target": "~/src/components/kit/etiquetas.ts"
+    },
+    {
+      "path": "registry/kit/orden.ts",
+      "content": "import type { Estado } from \"./tipos\"\n\nexport const ORDEN_LISTA: Estado[] = [\n  \"curso\",\n  \"revision\",\n  \"porhacer\",\n  \"sinrevisar\",\n  \"bloqueada\",\n  \"hecha\",\n  \"cancelada\",\n]\n\nexport const ORDEN_TABLERO: Estado[] = [\n  \"sinrevisar\",\n  \"porhacer\",\n  \"curso\",\n  \"revision\",\n  \"hecha\",\n  \"bloqueada\",\n  \"cancelada\",\n]\n\nexport const PLEGADOS_AL_INICIO = new Set<Estado>([\"hecha\", \"cancelada\"])\n",
+      "type": "registry:lib",
+      "target": "~/src/components/kit/orden.ts"
+    }
+  ],
+  "type": "registry:block"
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "kit-completo",
+  "title": "Kit completo",
+  "description": "Todos los componentes, el tema, las fuentes y las reglas.",
+  "registryDependencies": [
+    "groman-prog/kit-apps-gonzalo/tema-gonzalo",
+    "groman-prog/kit-apps-gonzalo/fuentes",
+    "groman-prog/kit-apps-gonzalo/estado-icono",
+    "groman-prog/kit-apps-gonzalo/atajos",
+    "groman-prog/kit-apps-gonzalo/vacio-dibujo",
+    "groman-prog/kit-apps-gonzalo/marco-app",
+    "groman-prog/kit-apps-gonzalo/lista-agrupada",
+    "groman-prog/kit-apps-gonzalo/tablero",
+    "groman-prog/kit-apps-gonzalo/conmutador-vista",
+    "groman-prog/kit-apps-gonzalo/panel-detalle",
+    "groman-prog/kit-apps-gonzalo/selector-propiedad",
+    "groman-prog/kit-apps-gonzalo/formulario-registro",
+    "groman-prog/kit-apps-gonzalo/acciones",
+    "groman-prog/kit-apps-gonzalo/estados-vista",
+    "groman-prog/kit-apps-gonzalo/reglas-agentes"
+  ],
+  "type": "registry:item"
+}

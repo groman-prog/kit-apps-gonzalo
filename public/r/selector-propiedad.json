@@ -1,0 +1,37 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "selector-propiedad",
+  "title": "Selector de propiedad",
+  "description": "Botón fantasma que cambia una propiedad al elegir, en popover o en panel inferior.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "button",
+    "command",
+    "popover",
+    "drawer",
+    "groman-prog/kit-apps-gonzalo/acciones"
+  ],
+  "files": [
+    {
+      "path": "registry/kit/selector-propiedad.tsx",
+      "content": "import { useId, useState } from \"react\"\nimport type { ReactNode } from \"react\"\nimport { Check } from \"lucide-react\"\nimport { cn } from \"@/lib/utils\"\nimport { Button } from \"@/components/ui/button\"\nimport {\n  Command,\n  CommandEmpty,\n  CommandGroup,\n  CommandInput,\n  CommandItem,\n  CommandList,\n} from \"@/components/ui/command\"\nimport { Popover, PopoverContent, PopoverTrigger } from \"@/components/ui/popover\"\nimport {\n  Drawer,\n  DrawerContent,\n  DrawerDescription,\n  DrawerTitle,\n  DrawerTrigger,\n} from \"@/components/ui/drawer\"\nimport { silenciarApertura } from \"./acciones\"\nimport { useAnchoMaximo } from \"./use-medio\"\n\nexport type OpcionSelector = {\n  id: string\n  etiqueta: string\n  icono?: ReactNode\n}\n\nexport function SelectorPropiedad({\n  etiqueta,\n  texto,\n  icono,\n  opciones,\n  valorId,\n  placeholder,\n  complemento,\n  abierto,\n  onAbiertoChange,\n  onElegir,\n}: {\n  etiqueta: string\n  texto: string\n  icono?: ReactNode\n  opciones: OpcionSelector[]\n  valorId: string\n  placeholder: string\n  complemento?: string\n  abierto?: boolean\n  onAbiertoChange?: (abierto: boolean) => void\n  onElegir: (id: string) => void\n}) {\n  const movil = useAnchoMaximo(767)\n  const idFiltro = useId()\n  const [interno, setInterno] = useState(false)\n  const [filtro, setFiltro] = useState(\"\")\n  const estaAbierto = abierto ?? interno\n  const cambiar = (siguiente: boolean) => {\n    if (!siguiente) setFiltro(\"\")\n    onAbiertoChange?.(siguiente)\n    if (abierto === undefined) setInterno(siguiente)\n  }\n  const elegir = (id: string) => {\n    silenciarApertura()\n    cambiar(false)\n    if (id !== valorId) onElegir(id)\n  }\n  const nombre = complemento ? `${etiqueta}: ${complemento} ${texto}` : `${etiqueta}: ${texto}`\n  const boton = (\n    <Button\n      type=\"button\"\n      variant=\"ghost\"\n      className=\"h-11 max-w-full justify-start gap-1 px-1 md:h-8\"\n      aria-label={nombre}\n      onClick={(evento) => evento.stopPropagation()}\n    >\n      {icono}\n      {complemento ? \" \" : null}\n      <span className=\"truncate hidden md:inline\">{texto}</span>\n    </Button>\n  )\n  if (movil) {\n    const visibles = opciones.filter((opcion) =>\n      opcion.etiqueta.toLowerCase().includes(filtro.trim().toLowerCase()),\n    )\n    return (\n      <Drawer open={estaAbierto} onOpenChange={cambiar}>\n        <DrawerTrigger asChild>{boton}</DrawerTrigger>\n        <DrawerContent>\n          <DrawerTitle className=\"px-4 pt-2 text-left\">{placeholder}</DrawerTitle>\n          <DrawerDescription className=\"sr-only\">Elige una opción de la lista.</DrawerDescription>\n          <label className=\"sr-only\" htmlFor={idFiltro}>\n            {placeholder}\n          </label>\n          <input\n            id={idFiltro}\n            value={filtro}\n            onChange={(evento) => setFiltro(evento.target.value)}\n            placeholder={placeholder}\n            className=\"mx-4 mt-2 h-11 rounded-md border border-input bg-background px-3\"\n          />\n          <ul role=\"listbox\" aria-label={placeholder} className=\"max-h-80 overflow-y-auto p-2\">\n            {visibles.map((opcion) => (\n              <li key={opcion.id}>\n                <button\n                  type=\"button\"\n                  role=\"option\"\n                  aria-selected={opcion.id === valorId}\n                  className=\"flex min-h-11 w-full items-center gap-2 rounded-md px-2 text-left hover:bg-muted\"\n                  onPointerDown={(evento) => evento.stopPropagation()}\n                  onClick={() => elegir(opcion.id)}\n                >\n                  {opcion.icono}\n                  <span className=\"flex-1 truncate\">{opcion.etiqueta}</span>\n                  {opcion.id === valorId ? <Check className=\"size-4\" /> : null}\n                </button>\n              </li>\n            ))}\n          </ul>\n        </DrawerContent>\n      </Drawer>\n    )\n  }\n  return (\n    <Popover open={estaAbierto} onOpenChange={cambiar}>\n      <PopoverTrigger asChild>{boton}</PopoverTrigger>\n      <PopoverContent align=\"start\" className=\"w-64 p-0\">\n        <Command>\n          <CommandInput placeholder={placeholder} />\n          <CommandList>\n            <CommandEmpty>Sin resultados.</CommandEmpty>\n            <CommandGroup>\n              {opciones.map((opcion) => (\n                <CommandItem\n                  key={opcion.id}\n                  value={opcion.etiqueta}\n                  data-checked={opcion.id === valorId}\n                  onSelect={() => elegir(opcion.id)}\n                >\n                  {opcion.icono}\n                  <span className={cn(opcion.id === valorId && \"font-medium\")}>{opcion.etiqueta}</span>\n                </CommandItem>\n              ))}\n            </CommandGroup>\n          </CommandList>\n        </Command>\n      </PopoverContent>\n    </Popover>\n  )\n}\n",
+      "type": "registry:component",
+      "target": "~/src/components/kit/selector-propiedad.tsx"
+    },
+    {
+      "path": "registry/kit/use-medio.ts",
+      "content": "import { useEffect, useState } from \"react\"\n\nexport function useAnchoMaximo(px: number) {\n  const [coincide, setCoincide] = useState(false)\n  useEffect(() => {\n    const consulta = window.matchMedia(`(max-width: ${px}px)`)\n    const aplicar = () => setCoincide(consulta.matches)\n    aplicar()\n    consulta.addEventListener(\"change\", aplicar)\n    return () => consulta.removeEventListener(\"change\", aplicar)\n  }, [px])\n  return coincide\n}\n",
+      "type": "registry:hook",
+      "target": "~/src/components/kit/use-medio.ts"
+    },
+    {
+      "path": "registry/kit/marcas.tsx",
+      "content": "import { cn } from \"@/lib/utils\"\n\nexport function Iniciales({ iniciales, className }: { iniciales: string; className?: string }) {\n  return (\n    <span\n      aria-hidden\n      className={cn(\n        \"inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-muted text-xs text-foreground\",\n        className,\n      )}\n    >\n      {iniciales}\n    </span>\n  )\n}\n\nconst ALTURAS = [\"h-1\", \"h-1.5\", \"h-2\", \"h-3\"] as const\n\nexport function PrioridadBarras({ nivel }: { nivel: number }) {\n  return (\n    <span aria-hidden className=\"inline-flex h-4 w-3 shrink-0 items-end gap-0.5\">\n      {ALTURAS.map((altura, indice) => (\n        <span\n          key={altura}\n          className={cn(\"w-0.5\", altura, indice < nivel ? \"bg-foreground\" : \"bg-border\")}\n        />\n      ))}\n    </span>\n  )\n}\n",
+      "type": "registry:component",
+      "target": "~/src/components/kit/marcas.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

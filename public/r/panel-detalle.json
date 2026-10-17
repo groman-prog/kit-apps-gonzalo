@@ -1,0 +1,42 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "panel-detalle",
+  "title": "Panel de detalle",
+  "description": "Detalle de la tarea a la derecha, o a pantalla completa en móvil.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "button",
+    "sheet",
+    "groman-prog/kit-apps-gonzalo/estado-icono",
+    "groman-prog/kit-apps-gonzalo/acciones"
+  ],
+  "files": [
+    {
+      "path": "registry/kit/panel-detalle.tsx",
+      "content": "import type { ReactNode } from \"react\"\nimport { X } from \"lucide-react\"\nimport { Button } from \"@/components/ui/button\"\nimport {\n  Sheet,\n  SheetContent,\n  SheetDescription,\n  SheetHeader,\n  SheetTitle,\n} from \"@/components/ui/sheet\"\nimport { EstadoIcono } from \"./estado-icono\"\nimport { ETIQUETA_ESTADO } from \"./etiquetas\"\nimport type { Tarea } from \"./tipos\"\nimport { MenuAcciones } from \"./acciones\"\nimport type { Accion } from \"./acciones\"\nimport { useAnchoMaximo } from \"./use-medio\"\n\nexport function PanelDetalle({\n  tarea,\n  acciones,\n  editando,\n  onCerrar,\n  onAnterior,\n  onSiguiente,\n  propiedades,\n  formulario,\n  onEditar,\n}: {\n  tarea: Tarea\n  acciones: Accion[]\n  editando: boolean\n  onCerrar: () => void\n  onAnterior?: () => void\n  onSiguiente?: () => void\n  propiedades: ReactNode\n  formulario: ReactNode\n  onEditar: () => void\n}) {\n  const movil = useAnchoMaximo(767)\n  const estrecho = useAnchoMaximo(1023)\n  const cuerpo = (\n    <div className=\"flex h-full min-h-0 flex-col bg-secondary\">\n      <div className=\"flex h-12 shrink-0 items-center gap-1 px-2\">\n        {movil ? (\n          <Button type=\"button\" variant=\"ghost\" className=\"h-11\" onClick={onCerrar}>\n            Volver\n          </Button>\n        ) : (\n          <Button type=\"button\" variant=\"ghost\" size=\"icon\" className=\"size-8\" aria-label=\"Cerrar\" onClick={onCerrar}>\n            <X />\n          </Button>\n        )}\n        <Button type=\"button\" variant=\"ghost\" className=\"h-11 md:h-8\" disabled={!onAnterior} onClick={onAnterior}>\n          Anterior\n        </Button>\n        <Button type=\"button\" variant=\"ghost\" className=\"h-11 md:h-8\" disabled={!onSiguiente} onClick={onSiguiente}>\n          Siguiente\n        </Button>\n        <span className=\"ml-auto\">\n          <MenuAcciones acciones={acciones} />\n        </span>\n      </div>\n      <div className=\"min-h-0 flex-1 overflow-y-auto px-4 pb-24 md:pb-6\">\n        <p className=\"text-xs text-muted-foreground\">{tarea.id}</p>\n        {editando ? (\n          <div className=\"mt-3\">{formulario}</div>\n        ) : estrecho ? (\n          <SheetTitle className=\"mt-1 text-base font-semibold\">{tarea.titulo}</SheetTitle>\n        ) : (\n          <h2 className=\"mt-1 text-base font-semibold\">{tarea.titulo}</h2>\n        )}\n        {editando && estrecho ? <SheetTitle className=\"sr-only\">{tarea.titulo}</SheetTitle> : null}\n        <div className=\"mt-4 grid grid-cols-1 gap-3 min-[480px]:grid-cols-2\">{propiedades}</div>\n        {editando ? null : <p className=\"mt-4 text-sm\">{tarea.descripcion}</p>}\n        {editando ? null : (\n          <Button type=\"button\" variant=\"secondary\" className=\"mt-4 h-11 md:h-8\" onClick={onEditar}>\n            Editar\n          </Button>\n        )}\n        <h3 className=\"mt-8 text-sm font-semibold\">Actividad</h3>\n        <ul className=\"mt-2 flex flex-col gap-2\">\n          {tarea.actividad.map((entrada, indice) => (\n            <li key={`${entrada.hora}-${indice}`} className=\"flex items-center gap-2 text-sm\">\n              <span className=\"tabular-nums text-muted-foreground\">{entrada.hora}</span>\n              {entrada.desde && entrada.hasta ? (\n                <>\n                  <EstadoIcono estado={entrada.desde} label={ETIQUETA_ESTADO[entrada.desde]} />\n                  <span>a</span>\n                  <EstadoIcono estado={entrada.hasta} label={ETIQUETA_ESTADO[entrada.hasta]} />\n                  <span>{ETIQUETA_ESTADO[entrada.hasta]}</span>\n                </>\n              ) : (\n                <span>{entrada.texto}</span>\n              )}\n            </li>\n          ))}\n        </ul>\n      </div>\n    </div>\n  )\n  if (estrecho) {\n    return (\n      <Sheet open onOpenChange={(open) => { if (!open) onCerrar() }}>\n        <SheetContent\n          side=\"right\"\n          showCloseButton={false}\n          className={\n            movil\n              ? \"w-screen! max-w-none! gap-0 border-0 bg-secondary p-0 sm:max-w-none!\"\n              : \"w-[432px]! max-w-none! gap-0 border-0 bg-secondary p-0 sm:max-w-none!\"\n          }\n        >\n          <SheetHeader className=\"sr-only\">\n            <SheetDescription>Detalle de la tarea {tarea.id}.</SheetDescription>\n          </SheetHeader>\n          {cuerpo}\n        </SheetContent>\n      </Sheet>\n    )\n  }\n  return (\n    <aside aria-label=\"Detalle de la tarea\" className=\"flex h-full w-[432px] shrink-0 flex-col\">\n      {cuerpo}\n    </aside>\n  )\n}\n",
+      "type": "registry:component",
+      "target": "~/src/components/kit/panel-detalle.tsx"
+    },
+    {
+      "path": "registry/kit/tipos.ts",
+      "content": "export type Estado =\n  | \"sinrevisar\"\n  | \"porhacer\"\n  | \"curso\"\n  | \"revision\"\n  | \"hecha\"\n  | \"bloqueada\"\n  | \"cancelada\"\n\nexport type Prioridad = \"ninguna\" | \"baja\" | \"media\" | \"alta\" | \"urgente\"\n\nexport type Actividad = {\n  hora: string\n  texto: string\n  desde?: Estado\n  hasta?: Estado\n}\n\nexport type Tarea = {\n  id: string\n  titulo: string\n  descripcion: string\n  estado: Estado\n  prioridad: Prioridad\n  responsableId: string\n  etiqueta: string\n  fecha: string\n  archivada: boolean\n  actividad: Actividad[]\n}\n\nexport type Responsable = {\n  id: string\n  nombre: string\n  iniciales: string\n}\n\nexport type CampoSelector = \"estado\" | \"prioridad\" | \"responsable\" | \"etiqueta\" | \"fecha\"\n",
+      "type": "registry:lib",
+      "target": "~/src/components/kit/tipos.ts"
+    },
+    {
+      "path": "registry/kit/etiquetas.ts",
+      "content": "import type { Estado, Prioridad } from \"./tipos\"\n\nexport const ETIQUETA_ESTADO: Record<Estado, string> = {\n  sinrevisar: \"Sin revisar\",\n  porhacer: \"Por hacer\",\n  curso: \"En curso\",\n  revision: \"En revisión\",\n  hecha: \"Hecha\",\n  bloqueada: \"Bloqueada\",\n  cancelada: \"Cancelada\",\n}\n\nexport const ETIQUETA_PRIORIDAD: Record<Prioridad, string> = {\n  ninguna: \"Ninguna\",\n  baja: \"Baja\",\n  media: \"Media\",\n  alta: \"Alta\",\n  urgente: \"Urgente\",\n}\n\nexport const NIVEL_PRIORIDAD: Record<Prioridad, number> = {\n  ninguna: 0,\n  baja: 1,\n  media: 2,\n  alta: 3,\n  urgente: 4,\n}\n\nexport const PRIORIDADES: Prioridad[] = [\"ninguna\", \"baja\", \"media\", \"alta\", \"urgente\"]\n",
+      "type": "registry:lib",
+      "target": "~/src/components/kit/etiquetas.ts"
+    },
+    {
+      "path": "registry/kit/use-medio.ts",
+      "content": "import { useEffect, useState } from \"react\"\n\nexport function useAnchoMaximo(px: number) {\n  const [coincide, setCoincide] = useState(false)\n  useEffect(() => {\n    const consulta = window.matchMedia(`(max-width: ${px}px)`)\n    const aplicar = () => setCoincide(consulta.matches)\n    aplicar()\n    consulta.addEventListener(\"change\", aplicar)\n    return () => consulta.removeEventListener(\"change\", aplicar)\n  }, [px])\n  return coincide\n}\n",
+      "type": "registry:hook",
+      "target": "~/src/components/kit/use-medio.ts"
+    }
+  ],
+  "type": "registry:block"
+}

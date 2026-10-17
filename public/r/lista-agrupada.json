@@ -1,0 +1,43 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "lista-agrupada",
+  "title": "Lista agrupada",
+  "description": "Tareas agrupadas por estado, con búsqueda y filas accionables.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "input",
+    "label",
+    "groman-prog/kit-apps-gonzalo/estado-icono",
+    "groman-prog/kit-apps-gonzalo/acciones",
+    "groman-prog/kit-apps-gonzalo/estados-vista"
+  ],
+  "files": [
+    {
+      "path": "registry/kit/lista-agrupada.tsx",
+      "content": "import { useEffect, useState } from \"react\"\nimport type { ReactNode } from \"react\"\nimport { ChevronRight } from \"lucide-react\"\nimport { cn } from \"@/lib/utils\"\nimport { Input } from \"@/components/ui/input\"\nimport { Label } from \"@/components/ui/label\"\nimport { EstadoIcono } from \"./estado-icono\"\nimport { ETIQUETA_ESTADO } from \"./etiquetas\"\nimport { ORDEN_LISTA, PLEGADOS_AL_INICIO } from \"./orden\"\nimport type { Estado, Tarea } from \"./tipos\"\nimport { MenuAcciones, MenuContextual, aperturaPermitida } from \"./acciones\"\nimport type { Accion } from \"./acciones\"\nimport { VacioFiltro } from \"./estados-vista\"\n\nexport function ListaAgrupada({\n  tareas,\n  consulta,\n  onConsulta,\n  abiertaId,\n  onAbrir,\n  grupoForzado,\n  renderFila,\n}: {\n  tareas: Tarea[]\n  consulta: string\n  onConsulta: (valor: string) => void\n  abiertaId?: string\n  onAbrir: (id: string) => void\n  grupoForzado?: { estado: Estado; n: number } | null\n  renderFila: (tarea: Tarea) => { acciones: Accion[]; izquierda: ReactNode; derecha: ReactNode }\n}) {\n  const [cerrados, setCerrados] = useState<Set<Estado>>(() => new Set(PLEGADOS_AL_INICIO))\n  useEffect(() => {\n    if (!grupoForzado) return\n    setCerrados((prev) => {\n      if (!prev.has(grupoForzado.estado)) return prev\n      const siguiente = new Set(prev)\n      siguiente.delete(grupoForzado.estado)\n      return siguiente\n    })\n  }, [grupoForzado])\n\n  const filtro = consulta.trim().toLowerCase()\n  const visibles = tareas.filter(\n    (tarea) => !tarea.archivada && (filtro === \"\" || tarea.titulo.toLowerCase().includes(filtro)),\n  )\n  const grupos = ORDEN_LISTA.map((estado) => ({\n    estado,\n    tareas: visibles.filter((tarea) => tarea.estado === estado),\n  })).filter((grupo) => grupo.tareas.length > 0)\n\n  return (\n    <div className=\"flex min-h-0 min-w-0 flex-1 flex-col\">\n      <div className=\"px-3 pb-2\">\n        <Label htmlFor=\"buscar-lista\" className=\"sr-only\">\n          Buscar en la lista\n        </Label>\n        <Input\n          id=\"buscar-lista\"\n          value={consulta}\n          placeholder=\"Buscar en la lista\"\n          onChange={(evento) => onConsulta(evento.target.value)}\n        />\n      </div>\n      <div className=\"min-h-0 flex-1 overflow-y-auto\" tabIndex={0} aria-label=\"Lista de tareas\">\n        {grupos.length === 0 && filtro ? (\n          <VacioFiltro onBorrar={() => onConsulta(\"\")} />\n        ) : null}\n        <div className=\"flex flex-col\">\n          {grupos.map((grupo, indice) => {\n            const abierto = !cerrados.has(grupo.estado)\n            return (\n              <section key={grupo.estado} className={cn(indice > 0 && \"mt-6\")}>\n                <button\n                  type=\"button\"\n                  className=\"sticky top-0 z-10 flex h-11 w-full scroll-mt-12 items-center gap-2 bg-background px-3 text-left md:h-8\"\n                  aria-expanded={abierto}\n                  onClick={() =>\n                    setCerrados((prev) => {\n                      const siguiente = new Set(prev)\n                      if (siguiente.has(grupo.estado)) siguiente.delete(grupo.estado)\n                      else siguiente.add(grupo.estado)\n                      return siguiente\n                    })\n                  }\n                >\n                  <EstadoIcono estado={grupo.estado} />\n                  <span className=\"text-sm font-medium\">{ETIQUETA_ESTADO[grupo.estado]}</span>\n                  <span className=\"text-sm tabular-nums text-muted-foreground\">{grupo.tareas.length}</span>\n                  <ChevronRight className={cn(\"ml-auto size-4 text-muted-foreground\", abierto && \"rotate-90\")} />\n                </button>\n                {abierto ? (\n                  <ul>\n                    {grupo.tareas.map((tarea) => {\n                      const fila = renderFila(tarea)\n                      const seleccionada = tarea.id === abiertaId\n                      return (\n                        <MenuContextual key={tarea.id} acciones={fila.acciones}>\n                          <li\n                            className={cn(\n                              \"relative flex min-h-11 cursor-default items-center gap-2 px-3 hover:bg-accent md:min-h-9\",\n                              seleccionada && \"bg-accent\",\n                            )}\n                            onClick={() => {\n                              if (aperturaPermitida()) onAbrir(tarea.id)\n                            }}\n                          >\n                            {seleccionada ? (\n                              <span className=\"absolute inset-y-0 left-0 w-0.5 bg-primary\" />\n                            ) : null}\n                            {fila.izquierda}\n                            <span className=\"min-w-0 flex-1 truncate text-sm font-medium\">{tarea.titulo}</span>\n                            {fila.derecha}\n                            <MenuAcciones acciones={fila.acciones} />\n                          </li>\n                        </MenuContextual>\n                      )\n                    })}\n                  </ul>\n                ) : null}\n              </section>\n            )\n          })}\n        </div>\n      </div>\n    </div>\n  )\n}\n",
+      "type": "registry:component",
+      "target": "~/src/components/kit/lista-agrupada.tsx"
+    },
+    {
+      "path": "registry/kit/tipos.ts",
+      "content": "export type Estado =\n  | \"sinrevisar\"\n  | \"porhacer\"\n  | \"curso\"\n  | \"revision\"\n  | \"hecha\"\n  | \"bloqueada\"\n  | \"cancelada\"\n\nexport type Prioridad = \"ninguna\" | \"baja\" | \"media\" | \"alta\" | \"urgente\"\n\nexport type Actividad = {\n  hora: string\n  texto: string\n  desde?: Estado\n  hasta?: Estado\n}\n\nexport type Tarea = {\n  id: string\n  titulo: string\n  descripcion: string\n  estado: Estado\n  prioridad: Prioridad\n  responsableId: string\n  etiqueta: string\n  fecha: string\n  archivada: boolean\n  actividad: Actividad[]\n}\n\nexport type Responsable = {\n  id: string\n  nombre: string\n  iniciales: string\n}\n\nexport type CampoSelector = \"estado\" | \"prioridad\" | \"responsable\" | \"etiqueta\" | \"fecha\"\n",
+      "type": "registry:lib",
+      "target": "~/src/components/kit/tipos.ts"
+    },
+    {
+      "path": "registry/kit/etiquetas.ts",
+      "content": "import type { Estado, Prioridad } from \"./tipos\"\n\nexport const ETIQUETA_ESTADO: Record<Estado, string> = {\n  sinrevisar: \"Sin revisar\",\n  porhacer: \"Por hacer\",\n  curso: \"En curso\",\n  revision: \"En revisión\",\n  hecha: \"Hecha\",\n  bloqueada: \"Bloqueada\",\n  cancelada: \"Cancelada\",\n}\n\nexport const ETIQUETA_PRIORIDAD: Record<Prioridad, string> = {\n  ninguna: \"Ninguna\",\n  baja: \"Baja\",\n  media: \"Media\",\n  alta: \"Alta\",\n  urgente: \"Urgente\",\n}\n\nexport const NIVEL_PRIORIDAD: Record<Prioridad, number> = {\n  ninguna: 0,\n  baja: 1,\n  media: 2,\n  alta: 3,\n  urgente: 4,\n}\n\nexport const PRIORIDADES: Prioridad[] = [\"ninguna\", \"baja\", \"media\", \"alta\", \"urgente\"]\n",
+      "type": "registry:lib",
+      "target": "~/src/components/kit/etiquetas.ts"
+    },
+    {
+      "path": "registry/kit/orden.ts",
+      "content": "import type { Estado } from \"./tipos\"\n\nexport const ORDEN_LISTA: Estado[] = [\n  \"curso\",\n  \"revision\",\n  \"porhacer\",\n  \"sinrevisar\",\n  \"bloqueada\",\n  \"hecha\",\n  \"cancelada\",\n]\n\nexport const ORDEN_TABLERO: Estado[] = [\n  \"sinrevisar\",\n  \"porhacer\",\n  \"curso\",\n  \"revision\",\n  \"hecha\",\n  \"bloqueada\",\n  \"cancelada\",\n]\n\nexport const PLEGADOS_AL_INICIO = new Set<Estado>([\"hecha\", \"cancelada\"])\n",
+      "type": "registry:lib",
+      "target": "~/src/components/kit/orden.ts"
+    }
+  ],
+  "type": "registry:block"
+}

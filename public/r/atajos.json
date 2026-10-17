@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "atajos",
+  "title": "Atajos de teclado",
+  "description": "Detecta Ctrl o Comando y compone atajos.",
+  "files": [
+    {
+      "path": "registry/kit/atajos.ts",
+      "content": "export const esMac = () =>\n  /mac|iphone|ipad/i.test((navigator as any).userAgentData?.platform ?? navigator.platform ?? \"\");\n\n// Etiquetas para mostrar: teclaMod() → \"Ctrl\" en Windows, \"⌘\" en Mac\nexport const teclaMod = () => (esMac() ? \"⌘\" : \"Ctrl\");\nexport const teclaAlt = () => (esMac() ? \"⌥\" : \"Alt\");\nexport const teclaMayus = () => (esMac() ? \"⇧\" : \"Mayús\");\nexport const teclaIntro = () => (esMac() ? \"↵\" : \"Intro\");\n\n// Para escuchar: Ctrl en Windows, ⌘ en Mac\nexport const conMod = (e: KeyboardEvent) => (esMac() ? e.metaKey : e.ctrlKey);\n\n// Las teclas sueltas no actúan mientras se escribe\nexport const escribiendo = (e: KeyboardEvent) =>\n  e.target instanceof HTMLElement && !!e.target.closest(\"input, textarea, select, [contenteditable='true']\");\n",
+      "type": "registry:lib",
+      "target": "~/src/components/kit/atajos.ts"
+    }
+  ],
+  "type": "registry:lib"
+}

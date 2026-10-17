@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "conmutador-vista",
+  "title": "Conmutador de vista",
+  "description": "Cambia entre lista y tablero.",
+  "registryDependencies": [
+    "toggle",
+    "toggle-group"
+  ],
+  "files": [
+    {
+      "path": "registry/kit/conmutador-vista.tsx",
+      "content": "import { ToggleGroup, ToggleGroupItem } from \"@/components/ui/toggle-group\"\n\nexport type Vista = \"lista\" | \"tablero\"\n\nexport function ConmutadorVista({\n  valor,\n  onCambio,\n}: {\n  valor: Vista\n  onCambio: (vista: Vista) => void\n}) {\n  return (\n    <ToggleGroup\n      type=\"single\"\n      value={valor}\n      spacing={0}\n      variant=\"outline\"\n      aria-label=\"Vista\"\n      onValueChange={(siguiente) => {\n        if (siguiente === \"lista\" || siguiente === \"tablero\") onCambio(siguiente)\n      }}\n    >\n      <ToggleGroupItem value=\"lista\" className=\"h-11 px-3 md:h-8\">\n        Lista\n      </ToggleGroupItem>\n      <ToggleGroupItem value=\"tablero\" className=\"h-11 px-3 md:h-8\">\n        Tablero\n      </ToggleGroupItem>\n    </ToggleGroup>\n  )\n}\n",
+      "type": "registry:component",
+      "target": "~/src/components/kit/conmutador-vista.tsx"
+    }
+  ],
+  "type": "registry:component"
+}
