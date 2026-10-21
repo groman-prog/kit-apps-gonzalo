@@ -1,0 +1,34 @@
+/* Tema anterior: cielo y ámbar.
+   Solo para Hub (customer-hub) y Casa (carloscanal). Esas apps no se migran
+   y no hay que tocarlas: ya tienen estos colores.
+   Si más adelante copian el tokens.css de Carbón y quieren seguir igual:
+   1. Copia este archivo a src/styles/tema-anterior.css
+      (o instala el item tema-anterior del registry).
+   2. Impórtalo en el CSS principal, justo después de tokens.css.
+   3. En el html: <html lang="es" data-tema="anterior">
+   Sin ese atributo, la app usa Carbón aunque este archivo esté importado.
+   Las apps nuevas no lo instalan. */
+
+[data-tema="anterior"] {
+  --secondary: oklch(0.964 0.010 247.9); /* #EEF4FA hielo: panel de detalle, chips */
+  --muted: oklch(0.964 0.010 247.9); /* #EEF4FA hielo: cabecera de tabla, skeleton */
+  --success: oklch(0.475 0.100 147.7); /* #2F6B3A */
+  --success-foreground: oklch(1.000 0 0); /* #FFFFFF */
+  --warning: oklch(0.720 0.145 75.8); /* #D8961C ámbar (solo relleno) */
+  --border: oklch(0.870 0.024 250.1); /* #C9D6E4 línea fría */
+  --input: oklch(0.596 0.040 252.3); /* #6E8197 borde de control */
+  --sidebar: oklch(0.931 0.021 245.9); /* #DDEAF6 cielo: barra lateral */
+  --sidebar-foreground: oklch(0.273 0.067 256.5); /* #0F2747 marino */
+  --sidebar-accent: oklch(1.000 0 0); /* #FFFFFF blanco: elemento activo sobre cielo */
+  --sidebar-accent-foreground: oklch(0.273 0.067 256.5); /* #0F2747 marino */
+  --sidebar-border: oklch(0.870 0.024 250.1); /* #C9D6E4 línea fría */
+  --chart-4: oklch(0.758 0.038 249.6); /* #9FB3C8 bruma */
+  --primary: oklch(0.720 0.145 75.8); /* #D8961C */
+  --accent: oklch(0.921 0.055 85.1); /* #F6E3BC */
+  --sidebar-ring: var(--ring);
+}
+
+@theme inline {
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+}

@@ -61,7 +61,7 @@ export function Tablero({
                         if (aperturaPermitida()) onAbrir(tarea.id)
                       }}
                     >
-                      {seleccionada ? <span className="absolute inset-y-0 left-0 w-0.5 bg-primary" /> : null}
+                      {seleccionada ? <span className="absolute inset-y-0 left-0 w-0.5 bg-ring" /> : null}
                       <div className="grid grid-cols-[var(--col-codigo)_minmax(0,1fr)_auto] items-start gap-2">
                         <span className="min-w-0 truncate text-left text-xs tabular-nums text-muted-foreground">
                           {tarea.id}

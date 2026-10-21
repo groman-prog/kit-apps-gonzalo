@@ -123,7 +123,7 @@ export function ListaAgrupada({
                             }}
                           >
                             {seleccionada ? (
-                              <span className="absolute inset-y-0 left-0 w-0.5 bg-primary" />
+                              <span className="absolute inset-y-0 left-0 w-0.5 bg-ring" />
                             ) : null}
                             <span data-icono-prioridad className="flex size-4 items-center justify-center">
                               {fila.prioridad}

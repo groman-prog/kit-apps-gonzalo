@@ -1,63 +1,69 @@
 /* ==========================================================================
-   Estándar de interfaz v3, Gonzalo Román: tokens.css
+   Estándar de interfaz v3, Gonzalo Román, tokens.css
    Variante A: Tailwind v4 + shadcn/ui actual (colores en oklch).
    La variante B (Tailwind v3, tripletas HSL) está en tokens-v3.css.
 
-   Uso: guárdalo como src/styles/tokens.css e impórtalo en el CSS principal
-   después de  @import "tailwindcss";  (y de shadcn/tailwind.css si existe),
-   quitando el :root, .dark y @theme inline que trae shadcn.
-   2. Neutros FIJOS. Por app solo cambian 4 variables: --primary,
-      --primary-foreground, --accent y --ring. Copia el bloque del tema
-      elegido dentro de :root (o deja el selector [data-tema] en <html>).
+   Uso en una app de Lovable:
+   1. Pega en src/index.css, después de  @import "tailwindcss";  y de
+      @import "shadcn/tailwind.css";  (si ya existe), sustituyendo el bloque
+      :root / @theme inline que trae el proyecto.
+   2. Paleta Carbón (21 oct 2026), fija: neutros y tema (--primary,
+      --primary-foreground, --accent y --ring) no se cambian por app.
+      Vale para las apps nuevas y para la demo de Patatas Arrebola; el Hub,
+      carloscanal y la landing mantienen sus colores hasta que Gonzalo
+      decida otra cosa. Nada de verde en ninguna parte.
    3. Solo tema claro. No hay .dark a propósito.
-   4. Base v3: blanco para trabajar, hielo para paneles, cielo en la
-      barra lateral, marino como tinta. Fuente: Lexend (fonts.css).
+   4. Barra lateral carbón con texto blanco, trabajo en blanco, panel en
+      gris claro, marino como tinta. Fuente: Lexend (fonts.css).
+   5. El tema «anterior» (cielo y ámbar) está en plantillas/tema-anterior.css.
+      Solo Hub (customer-hub) y Casa (carloscanal), que no se migran: copian
+      ese archivo, lo importan después de este y ponen data-tema="anterior"
+      en <html>. Las apps nuevas no lo hacen.
    ========================================================================== */
 
 /* Contraste WCAG verificado (gen_tokens.py, todo OK):
  * texto foreground sobre background                          #0F2747 / #FFFFFF  14.98  OK (mín. 4.5)
  * texto foreground sobre card                                #0F2747 / #FFFFFF  14.98  OK (mín. 4.5)
- * texto foreground sobre muted                               #0F2747 / #EEF4FA  13.53  OK (mín. 4.5)
- * texto foreground sobre sidebar                             #0F2747 / #DDEAF6  12.25  OK (mín. 4.5)
+ * texto foreground sobre muted                               #0F2747 / #F1F2F4  13.38  OK (mín. 4.5)
  * texto muted-foreground sobre background                    #3D5470 / #FFFFFF   7.78  OK (mín. 4.5)
  * texto muted-foreground sobre card                          #3D5470 / #FFFFFF   7.78  OK (mín. 4.5)
- * texto muted-foreground sobre muted                         #3D5470 / #EEF4FA   7.02  OK (mín. 4.5)
- * texto muted-foreground sobre sidebar                       #3D5470 / #DDEAF6   6.36  OK (mín. 4.5)
- * texto destructive sobre sidebar                            #B42318 / #DDEAF6   5.38  OK (mín. 4.5)
+ * texto muted-foreground sobre muted                         #3D5470 / #F1F2F4   6.94  OK (mín. 4.5)
+ * texto sidebar-foreground sobre sidebar                     #FFFFFF / #2B2F36  13.44  OK (mín. 4.5)
+ * texto sidebar-accent-foreground sobre sidebar-accent       #FFFFFF / #474E5A   8.38  OK (mín. 4.5)
  * texto destructive sobre card                               #B42318 / #FFFFFF   6.57  OK (mín. 4.5)
  * texto destructive sobre background                         #B42318 / #FFFFFF   6.57  OK (mín. 4.5)
+ * texto destructive sobre muted                              #B42318 / #F1F2F4   5.87  OK (mín. 4.5)
  * texto destructive-foreground sobre destructive             #FFFFFF / #B42318   6.57  OK (mín. 4.5)
- * texto success-foreground sobre success                     #FFFFFF / #2F6B3A   6.39  OK (mín. 4.5)
- * texto success sobre card                                   #2F6B3A / #FFFFFF   6.39  OK (mín. 4.5)
- * texto warning-foreground sobre warning                     #0F2747 / #D8961C   5.92  OK (mín. 4.5)
- * borde input sobre card (no textual)                        #6E8197 / #FFFFFF   4.00  OK (mín. 3.0)
- * borde input sobre background (no textual)                  #6E8197 / #FFFFFF   4.00  OK (mín. 3.0)
- * borde input sobre muted/hielo (no textual)                 #6E8197 / #EEF4FA   3.61  OK (mín. 3.0)
- * borde input sobre sidebar/cielo (no textual)               #6E8197 / #DDEAF6   3.27  OK (mín. 3.0)
- * -- tema ambar
- * [ambar] primary-foreground sobre primary                   #0F2747 / #D8961C   5.92  OK (mín. 4.5)
- * [ambar] accent-foreground sobre accent                     #0F2747 / #F6E3BC  11.87  OK (mín. 4.5)
- * [ambar] muted-foreground sobre accent (fila seleccionada)  #3D5470 / #F6E3BC   6.16  OK (mín. 4.5)
- * [ambar] ring sobre background (foco, no textual)           #8A5A0B / #FFFFFF   5.92  OK (mín. 3.0)
- * [ambar] ring sobre card (foco, no textual)                 #8A5A0B / #FFFFFF   5.92  OK (mín. 3.0)
- * [ambar] ring sobre muted (foco, no textual)                #8A5A0B / #EEF4FA   5.34  OK (mín. 3.0)
- * [ambar] ring sobre sidebar (foco, no textual)              #8A5A0B / #DDEAF6   4.84  OK (mín. 3.0)
- * -- tema oliva
- * [oliva] primary-foreground sobre primary                   #FFFFFF / #55602A   6.79  OK (mín. 4.5)
- * [oliva] accent-foreground sobre accent                     #0F2747 / #E3E7CF  11.84  OK (mín. 4.5)
- * [oliva] muted-foreground sobre accent (fila seleccionada)  #3D5470 / #E3E7CF   6.15  OK (mín. 4.5)
- * [oliva] ring sobre background (foco, no textual)           #55602A / #FFFFFF   6.79  OK (mín. 3.0)
- * [oliva] ring sobre card (foco, no textual)                 #55602A / #FFFFFF   6.79  OK (mín. 3.0)
- * [oliva] ring sobre muted (foco, no textual)                #55602A / #EEF4FA   6.13  OK (mín. 3.0)
- * [oliva] ring sobre sidebar (foco, no textual)              #55602A / #DDEAF6   5.55  OK (mín. 3.0)
- * -- tema petroleo
- * [petroleo] primary-foreground sobre primary                #FFFFFF / #1F5560   8.31  OK (mín. 4.5)
- * [petroleo] accent-foreground sobre accent                  #0F2747 / #D6E6E7  11.65  OK (mín. 4.5)
- * [petroleo] muted-foreground sobre accent (fila seleccionada) #3D5470 / #D6E6E7   6.05  OK (mín. 4.5)
- * [petroleo] ring sobre background (foco, no textual)        #1F5560 / #FFFFFF   8.31  OK (mín. 3.0)
- * [petroleo] ring sobre card (foco, no textual)              #1F5560 / #FFFFFF   8.31  OK (mín. 3.0)
- * [petroleo] ring sobre muted (foco, no textual)             #1F5560 / #EEF4FA   7.50  OK (mín. 3.0)
- * [petroleo] ring sobre sidebar (foco, no textual)           #1F5560 / #DDEAF6   6.80  OK (mín. 3.0)
+ * texto warning-foreground sobre warning                     #0F2747 / #D4901A   5.57  OK (mín. 4.5)
+ * texto tag-1-foreground sobre tag-1                         #5E2610 / #E6AF92   6.20  OK (mín. 4.5)
+ * texto tag-1-foreground sobre tag-1-mid                     #5E2610 / #ECC2AB   7.31  OK (mín. 4.5)
+ * texto tag-1-foreground sobre tag-1-soft                    #5E2610 / #F1D3C2   8.43  OK (mín. 4.5)
+ * texto tag-2-foreground sobre tag-2                         #0E2F5A / #A4C0E6   7.16  OK (mín. 4.5)
+ * texto tag-2-foreground sobre tag-2-mid                     #0E2F5A / #BAD0EE   8.48  OK (mín. 4.5)
+ * texto tag-2-foreground sobre tag-2-soft                    #0E2F5A / #CEDDF2   9.69  OK (mín. 4.5)
+ * texto tag-neutral-foreground sobre tag-neutral             #2B2F36 / #E4E6EA  10.75  OK (mín. 4.5)
+ * icono status sobre background (no textual)                 #3A4250 / #FFFFFF  10.12  OK (mín. 3.0)
+ * icono status sobre muted (no textual)                      #3A4250 / #F1F2F4   9.03  OK (mín. 3.0)
+ * icono status-late sobre background (no textual)            #9A6410 / #FFFFFF   4.99  OK (mín. 3.0)
+ * icono status-late sobre muted (no textual)                 #9A6410 / #F1F2F4   4.46  OK (mín. 3.0)
+ * icono status-done sobre background (no textual)            #0F2747 / #FFFFFF  14.98  OK (mín. 3.0)
+ * icono status-done sobre muted (no textual)                 #0F2747 / #F1F2F4  13.38  OK (mín. 3.0)
+ * borde input sobre card (no textual)                        #686C74 / #FFFFFF   5.27  OK (mín. 3.0)
+ * borde input sobre background (no textual)                  #686C74 / #FFFFFF   5.27  OK (mín. 3.0)
+ * borde input sobre muted (no textual)                       #686C74 / #F1F2F4   4.70  OK (mín. 3.0)
+ * -- tema carbon
+ * [carbon] primary-foreground sobre primary                  #0F2747 / #D4901A   5.57  OK (mín. 4.5)
+ * [carbon] accent-foreground sobre accent                    #0F2747 / #F4D58F  10.53  OK (mín. 4.5)
+ * [carbon] muted-foreground sobre accent (fila seleccionada) #3D5470 / #F4D58F   5.47  OK (mín. 4.5)
+ * [carbon] destructive sobre accent (fila seleccionada)      #B42318 / #F4D58F   4.62  OK (mín. 4.5)
+ * [carbon] ring sobre background (foco, no textual)          #8A5A0B / #FFFFFF   5.92  OK (mín. 3.0)
+ * [carbon] ring sobre card (foco, no textual)                #8A5A0B / #FFFFFF   5.92  OK (mín. 3.0)
+ * [carbon] ring sobre muted (foco, no textual)               #8A5A0B / #F1F2F4   5.28  OK (mín. 3.0)
+ * [carbon] ring sobre accent (barra de foco, no textual)     #8A5A0B / #F4D58F   4.16  OK (mín. 3.0)
+ * [carbon] icono status sobre accent (no textual)            #3A4250 / #F4D58F   7.11  OK (mín. 3.0)
+ * [carbon] icono status-late sobre accent (no textual)       #9A6410 / #F4D58F   3.51  OK (mín. 3.0)
+ * [carbon] sidebar-ring (primary) sobre sidebar (foco, no textual) #D4901A / #2B2F36   4.99  OK (mín. 3.0)
+ * [carbon] sidebar-ring (primary) sobre sidebar-accent (foco, no textual) #D4901A / #474E5A   3.11  OK (mín. 3.0)
  */
 
 :root {
@@ -69,54 +75,49 @@
   --card-foreground: oklch(0.273 0.067 256.5); /* #0F2747 marino */
   --popover: oklch(1.000 0 0); /* #FFFFFF blanco: menús y paleta */
   --popover-foreground: oklch(0.273 0.067 256.5); /* #0F2747 marino */
-  --secondary: oklch(0.964 0.010 247.9); /* #EEF4FA hielo: panel de detalle, chips */
+  --secondary: oklch(0.961 0.003 264.5); /* #F1F2F4 gris claro: panel de detalle, chips */
   --secondary-foreground: oklch(0.273 0.067 256.5); /* #0F2747 marino */
-  --muted: oklch(0.964 0.010 247.9); /* #EEF4FA hielo: cabecera de tabla, skeleton */
+  --muted: oklch(0.961 0.003 264.5); /* #F1F2F4 gris claro: cabecera de tabla, avisos, skeleton */
   --muted-foreground: oklch(0.439 0.054 253.8); /* #3D5470 pizarra (secundario) */
   --accent-foreground: oklch(0.273 0.067 256.5); /* #0F2747 marino */
-  --destructive: oklch(0.500 0.182 29.5); /* #B42318 rojo */
+  --destructive: oklch(0.500 0.182 29.5); /* #B42318 rojo: solo negativos, retrasos y errores */
   --destructive-foreground: oklch(1.000 0 0); /* #FFFFFF blanco */
-  --success: oklch(0.475 0.100 147.7); /* #2F6B3A verde */
-  --success-foreground: oklch(1.000 0 0); /* #FFFFFF blanco */
-  --warning: oklch(0.720 0.145 75.8); /* #D8961C ámbar (solo relleno) */
+  --warning: oklch(0.704 0.143 73.9); /* #D4901A ámbar (solo relleno) */
   --warning-foreground: oklch(0.273 0.067 256.5); /* #0F2747 marino */
-  --border: oklch(0.870 0.024 250.1); /* #C9D6E4 línea fría: solo bordes necesarios */
-  --input: oklch(0.596 0.040 252.3); /* #6E8197 borde de control (3:1 en blanco, hielo y cielo) */
-  --sidebar: oklch(0.931 0.021 245.9); /* #DDEAF6 cielo: barra lateral */
-  --sidebar-foreground: oklch(0.273 0.067 256.5); /* #0F2747 marino */
-  --sidebar-accent: oklch(1.000 0 0); /* #FFFFFF blanco: elemento activo sobre cielo */
-  --sidebar-accent-foreground: oklch(0.273 0.067 256.5); /* #0F2747 marino */
-  --sidebar-border: oklch(0.870 0.024 250.1); /* #C9D6E4 línea fría */
+  --status: oklch(0.377 0.026 261.6); /* #3A4250 carbón: iconos de estado (trazo 1,75) */
+  --status-late: oklch(0.549 0.113 70.8); /* #9A6410 ocre: icono de estado con retraso */
+  --status-done: oklch(0.273 0.067 256.5); /* #0F2747 marino: hecho */
+  --tag-1: oklch(0.797 0.076 49.0); /* #E6AF92 terracota fuerte: etiqueta tono 1 */
+  --tag-1-mid: oklch(0.845 0.058 50.3); /* #ECC2AB terracota media */
+  --tag-1-soft: oklch(0.887 0.041 51.4); /* #F1D3C2 terracota suave */
+  --tag-1-foreground: oklch(0.345 0.088 40.6); /* #5E2610 texto de etiqueta tono 1 */
+  --tag-2: oklch(0.800 0.062 256.1); /* #A4C0E6 azul fuerte: etiqueta tono 2 */
+  --tag-2-mid: oklch(0.851 0.048 256.2); /* #BAD0EE azul medio */
+  --tag-2-soft: oklch(0.893 0.033 256.8); /* #CEDDF2 azul suave */
+  --tag-2-foreground: oklch(0.308 0.086 256.6); /* #0E2F5A texto de etiqueta tono 2 */
+  --tag-neutral: oklch(0.925 0.006 264.5); /* #E4E6EA gris: etiqueta de envase o contenedor */
+  --tag-neutral-foreground: oklch(0.304 0.014 261.7); /* #2B2F36 texto de etiqueta neutra */
+  --border: oklch(0.873 0.007 268.5); /* #D3D5DA línea gris: solo bordes necesarios */
+  --input: oklch(0.531 0.013 264.5); /* #686C74 borde de control (3:1 en blanco y gris claro) */
+  --sidebar: oklch(0.304 0.014 261.7); /* #2B2F36 carbón: barra lateral */
+  --sidebar-foreground: oklch(1.000 0 0); /* #FFFFFF blanco */
+  --sidebar-accent: oklch(0.422 0.022 261.3); /* #474E5A carbón claro: elemento activo */
+  --sidebar-accent-foreground: oklch(1.000 0 0); /* #FFFFFF blanco */
+  --sidebar-border: oklch(0.304 0.014 261.7); /* #2B2F36 igual que la barra: sin borde visible */
   --chart-2: oklch(0.273 0.067 256.5); /* #0F2747 marino */
   --chart-3: oklch(0.439 0.054 253.8); /* #3D5470 pizarra */
-  --chart-4: oklch(0.758 0.038 249.6); /* #9FB3C8 bruma */
+  --chart-4: oklch(0.800 0.062 256.1); /* #A4C0E6 azul */
   --chart-5: oklch(0.500 0.182 29.5); /* #B42318 rojo */
-  /* Tema por defecto: ámbar (las 4 variables que cambian por app) */
-  --primary: oklch(0.720 0.145 75.8); /* #D8961C */
+  /* Tema Carbón: acento ámbar, fila seleccionada y barra de foco */
+  --primary: oklch(0.704 0.143 73.9); /* #D4901A */
   --primary-foreground: oklch(0.273 0.067 256.5); /* #0F2747 */
-  --accent: oklch(0.921 0.055 85.1); /* #F6E3BC */
+  --accent: oklch(0.883 0.095 86.6); /* #F4D58F */
   --ring: oklch(0.508 0.105 71.9); /* #8A5A0B */
   /* Alias: siguen al tema automáticamente */
   --sidebar-primary: var(--primary);
   --sidebar-primary-foreground: var(--primary-foreground);
-  --sidebar-ring: var(--ring);
+  --sidebar-ring: var(--primary);
   --chart-1: var(--primary);
-}
-
-/* Tema Oliva */
-[data-tema="oliva"] {
-  --primary: oklch(0.467 0.078 119.1); /* #55602A */
-  --primary-foreground: oklch(1.000 0 0); /* #FFFFFF */
-  --accent: oklch(0.918 0.032 114.7); /* #E3E7CF */
-  --ring: oklch(0.467 0.078 119.1); /* #55602A */
-}
-
-/* Tema Petróleo */
-[data-tema="petroleo"] {
-  --primary: oklch(0.419 0.059 213.4); /* #1F5560 */
-  --primary-foreground: oklch(1.000 0 0); /* #FFFFFF */
-  --accent: oklch(0.913 0.017 201.4); /* #D6E6E7 */
-  --ring: oklch(0.419 0.059 213.4); /* #1F5560 */
 }
 
 @theme inline {
@@ -133,10 +134,21 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
-  --color-success: var(--success);
-  --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
+  --color-status: var(--status);
+  --color-status-late: var(--status-late);
+  --color-status-done: var(--status-done);
+  --color-tag-1: var(--tag-1);
+  --color-tag-1-mid: var(--tag-1-mid);
+  --color-tag-1-soft: var(--tag-1-soft);
+  --color-tag-1-foreground: var(--tag-1-foreground);
+  --color-tag-2: var(--tag-2);
+  --color-tag-2-mid: var(--tag-2-mid);
+  --color-tag-2-soft: var(--tag-2-soft);
+  --color-tag-2-foreground: var(--tag-2-foreground);
+  --color-tag-neutral: var(--tag-neutral);
+  --color-tag-neutral-foreground: var(--tag-neutral-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-sidebar: var(--sidebar);
@@ -170,7 +182,6 @@
   --text-2xl: 1.375rem; --text-2xl--line-height: 1.75rem;
 }
 
-/* Base: añadir al final */
 @layer base {
   html { font-family: var(--font-sans); color: var(--foreground); background: var(--background); }
   .tabular-nums { font-family: var(--font-cifras); font-variant-numeric: tabular-nums; }

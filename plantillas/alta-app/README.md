@@ -56,6 +56,7 @@ Mira: `package.json` (scripts `dev`, `test`, `lint`; si ya tiene `@playwright/te
    - Siempre: configuración de Lovable (`vite.config.ts`, `src/router.tsx`, `src/start.ts`, `src/server.ts`, `.lovable/`).
    Quita las categorías que no aplican o di explícitamente «esta app no tiene X; si una tarea lo pide, para y pregunta». Cita rutas reales, no inventadas.
 3. Copia la sección «## Zonas delicadas» final en `/workspace/lovi/zonas-delicadas.md` con un encabezado `## REPO (Nombre)`.
+4. Copia `plantillas/alta-app/diseno.md` a `docs/diseno.md` de la app. Es el estándar Carbón del 21 oct 2026. Hub (customer-hub) y Casa (carloscanal) no cambian de paleta: conservan el tema `anterior` (ver el README del kit).
 
 ## 6. Workflow de Claude Code (solo si existe `.github/workflows/claude-code.yml`)
 
