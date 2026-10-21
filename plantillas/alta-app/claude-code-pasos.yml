@@ -1,0 +1,19 @@
+# Plantilla: cambios estándar en .github/workflows/claude-code.yml (solo si la app usa Claude Code).
+# Aprobado por Gonzalo (regla general del 21 oct 2026). No cambies nada más: ni disparadores, ni permisos, ni secretos.
+#
+# 1) Justo después del paso que instala dependencias (`- run: bun install`), añade:
+      - name: Caché de navegadores de Playwright
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+      - name: Instalar Chromium para npm run comprobar
+        run: bunx playwright install --with-deps chromium
+# (Si el repo usa npm y package-lock.json: `npx playwright install --with-deps chromium` y hashFiles('package-lock.json').)
+#
+# 2) Al final de la lista de --allowedTools (dentro de las mismas comillas), añade:
+#    ,Bash(npm run comprobar),Bash(bun run comprobar),Bash(npx playwright *),Bash(bunx playwright *)
+#
+# 3) Valida: actionlint -shellcheck= .github/workflows/claude-code.yml
+# 4) PR aparte, descripción empezando por:
+#    «Toca zona delicada: workflow (aprobado por Gonzalo el 21 oct 2026)»
