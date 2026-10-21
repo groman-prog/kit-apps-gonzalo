@@ -10,6 +10,8 @@ const RE_PALETA = new RegExp(
 )
 const RE_HEX = /#[0-9a-fA-F]{3,8}\b/g
 const RE_FUNCION_COLOR = /(?:rgb|rgba|hsl|oklch)\(/g
+const RE_VERDE =
+  /success|green|emerald|\blime\b|teal|#(?:2F6B3A|3F6B34|B8E4C6|CBEBD4|DCF2E3)\b/i
 const RE_ARBITRARIO = /\[(?:#|rgb|oklch)/
 const NOMBRES_FUENTE =
   /\b(?:Inter|Geist|Roboto|Arial|Helvetica|system-ui|Newsreader|Instrument Sans)\b/
@@ -113,6 +115,7 @@ export function comprobarTexto(archivo: string, texto: string): Hallazgo[] {
     const pesoMal = peso(linea, enFontFace)
     if (pesoMal) motivos.push(pesoMal)
     if (linea.includes("\u00B7")) motivos.push("punto medio")
+    if (tokens && RE_VERDE.test(linea)) motivos.push("verde en el tema por defecto")
     if (/backdrop-blur/.test(linea)) motivos.push("desenfoque de fondo")
     if (/rounded-(?:xl|2xl|3xl)\b/.test(linea)) motivos.push("radio excesivo")
     if (/font-(?:bold|extrabold|black)\b/.test(linea)) motivos.push("peso de fuente no permitido")

@@ -6,6 +6,7 @@ Kit de componentes React + shadcn/ui + Tailwind 4 con el estándar visual y de u
 - Cumple docs/diseno.md. Ante la duda, quita.
 - Los componentes viven en registry/kit/. La demo (src/) solo los usa: no reimplementes en la demo lo que es del kit.
 - Solo tokens semánticos de src/styles/tokens.css. Nada de hex, paleta de Tailwind, sombras, degradados, otras fuentes ni el carácter de punto medio.
+- El tema por defecto es Carbón. No existen oliva ni petróleo. El tema «anterior» (cielo y ámbar) solo lo piden Hub y Casa, con data-tema="anterior".
 - Todo se puede hacer con controles visibles. Los atajos son un extra y no se testean como criterio.
 - Cambio menor (propiedad con lista cerrada): al instante, con toast de Deshacer. Cambio importante (textos, altas, varios campos): botón Guardar y aviso de cambios sin guardar. Solo se confirma al borrar.
 - Textos en español de España, verbo + objeto, sin exclamaciones ni emojis. «Tarea», «responsable».

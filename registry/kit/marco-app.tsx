@@ -189,7 +189,7 @@ export function MarcoApp({
                 />
               </SidebarMenuItem>
             </SidebarMenu>
-            <p className="text-sm text-muted-foreground">{usuario}</p>
+            <p className="text-sm text-sidebar-foreground">{usuario}</p>
           </SidebarFooter>
         </Sidebar>
         <SidebarInset className="min-h-0 min-w-0 overflow-hidden">

@@ -1,6 +1,18 @@
 # Kit de apps de Gonzalo
 
-Componentes de React, shadcn/ui y Tailwind 4 con el estándar visual de las apps de Gonzalo Román: Lexend autoalojada, temas ámbar, oliva y petróleo, y listas, tableros y paneles listos para una app de tareas.
+Componentes de React, shadcn/ui y Tailwind 4 con el estándar visual de las apps de Gonzalo Román: Lexend autoalojada, paleta Carbón y listas, tableros y paneles listos para una app de tareas.
+
+## Tema
+
+Carbón es el tema por defecto desde el 21 oct 2026. Los temas oliva y petróleo ya no existen.
+
+Hub (customer-hub) y Casa (carloscanal) no se migran: siguen con el cielo y el ámbar que ya tienen. Si una de esas apps copia el `tokens.css` nuevo y quiere seguir igual:
+
+1. Copia `plantillas/tema-anterior.css` a `src/styles/tema-anterior.css`, o instala el item `tema-anterior`.
+2. Impórtalo en el CSS principal, justo después de `tokens.css`.
+3. En el `<html>`, añade `data-tema="anterior"`.
+
+Sin ese atributo, la app usa Carbón. Las apps nuevas no lo ponen.
 
 ## Probar la demo
 
@@ -8,7 +20,7 @@ Componentes de React, shadcn/ui y Tailwind 4 con el estándar visual de las apps
 bun install && bun run dev
 ```
 
-La demo se abre en `http://127.0.0.1:5173` con 24 tareas de ejemplo. En Ajustes puedes cambiar el tema.
+La demo se abre en `http://127.0.0.1:5173` con 24 tareas de ejemplo. Usa Carbón.
 
 ## Instalar desde GitHub
 

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tema-anterior",
+  "title": "Tema anterior",
+  "description": "Cielo y ámbar, solo para Hub (customer-hub) y Casa (carloscanal). Importa el CSS después de tokens.css y pon data-tema=\"anterior\" en html.",
+  "files": [
+    {
+      "path": "plantillas/tema-anterior.css",
+      "content": "/* Tema anterior: cielo y ámbar.\n   Solo para Hub (customer-hub) y Casa (carloscanal). Esas apps no se migran\n   y no hay que tocarlas: ya tienen estos colores.\n   Si más adelante copian el tokens.css de Carbón y quieren seguir igual:\n   1. Copia este archivo a src/styles/tema-anterior.css\n      (o instala el item tema-anterior del registry).\n   2. Impórtalo en el CSS principal, justo después de tokens.css.\n   3. En el html: <html lang=\"es\" data-tema=\"anterior\">\n   Sin ese atributo, la app usa Carbón aunque este archivo esté importado.\n   Las apps nuevas no lo instalan. */\n\n[data-tema=\"anterior\"] {\n  --secondary: oklch(0.964 0.010 247.9); /* #EEF4FA hielo: panel de detalle, chips */\n  --muted: oklch(0.964 0.010 247.9); /* #EEF4FA hielo: cabecera de tabla, skeleton */\n  --success: oklch(0.475 0.100 147.7); /* #2F6B3A */\n  --success-foreground: oklch(1.000 0 0); /* #FFFFFF */\n  --warning: oklch(0.720 0.145 75.8); /* #D8961C ámbar (solo relleno) */\n  --border: oklch(0.870 0.024 250.1); /* #C9D6E4 línea fría */\n  --input: oklch(0.596 0.040 252.3); /* #6E8197 borde de control */\n  --sidebar: oklch(0.931 0.021 245.9); /* #DDEAF6 cielo: barra lateral */\n  --sidebar-foreground: oklch(0.273 0.067 256.5); /* #0F2747 marino */\n  --sidebar-accent: oklch(1.000 0 0); /* #FFFFFF blanco: elemento activo sobre cielo */\n  --sidebar-accent-foreground: oklch(0.273 0.067 256.5); /* #0F2747 marino */\n  --sidebar-border: oklch(0.870 0.024 250.1); /* #C9D6E4 línea fría */\n  --chart-4: oklch(0.758 0.038 249.6); /* #9FB3C8 bruma */\n  --primary: oklch(0.720 0.145 75.8); /* #D8961C */\n  --accent: oklch(0.921 0.055 85.1); /* #F6E3BC */\n  --sidebar-ring: var(--ring);\n}\n\n@theme inline {\n  --color-success: var(--success);\n  --color-success-foreground: var(--success-foreground);\n}\n",
+      "type": "registry:file",
+      "target": "~/src/styles/tema-anterior.css"
+    }
+  ],
+  "type": "registry:item"
+}

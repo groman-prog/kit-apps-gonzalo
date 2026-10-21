@@ -7,8 +7,8 @@
       "name": "tema-gonzalo",
       "type": "registry:item",
       "title": "Tema de Gonzalo",
-      "description": "Tokens de color y las @font-face de Lexend y Cifras GR.",
-      "docs": "Importa src/styles/tokens.css en tu CSS principal y ejecuta scripts/generar-fuentes.py.",
+      "description": "Paleta Carbón, el tema por defecto, y las @font-face de Lexend y Cifras GR.",
+      "docs": "Importa src/styles/tokens.css en tu CSS principal y ejecuta scripts/generar-fuentes.py. Las apps nuevas no ponen data-tema.",
       "files": [
         {
           "path": "src/styles/tokens.css",
@@ -19,6 +19,19 @@
           "path": "src/styles/fuentes.css",
           "type": "registry:file",
           "target": "~/src/styles/fuentes.css"
+        }
+      ]
+    },
+    {
+      "name": "tema-anterior",
+      "type": "registry:item",
+      "title": "Tema anterior",
+      "description": "Cielo y ámbar, solo para Hub (customer-hub) y Casa (carloscanal). Importa el CSS después de tokens.css y pon data-tema=\"anterior\" en html.",
+      "files": [
+        {
+          "path": "plantillas/tema-anterior.css",
+          "type": "registry:file",
+          "target": "~/src/styles/tema-anterior.css"
         }
       ]
     },

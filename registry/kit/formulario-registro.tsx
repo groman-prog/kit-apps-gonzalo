@@ -132,7 +132,7 @@ export function FormularioRegistro({
           {enviando ? "Guardando…" : "Guardar"}
         </Button>
         {guardado ? (
-          <span className="inline-flex items-center gap-1 text-sm text-success">
+          <span className="inline-flex items-center gap-1 text-sm text-status-done">
             <Check className="size-4" />
             Guardado
           </span>
