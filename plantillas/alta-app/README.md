@@ -57,6 +57,7 @@ Mira: `package.json` (scripts `dev`, `test`, `lint`; si ya tiene `@playwright/te
    Quita las categorías que no aplican o di explícitamente «esta app no tiene X; si una tarea lo pide, para y pregunta». Cita rutas reales, no inventadas.
 3. Copia la sección «## Zonas delicadas» final en `/workspace/lovi/zonas-delicadas.md` con un encabezado `## REPO (Nombre)`.
 4. Copia `plantillas/alta-app/diseno.md` a `docs/diseno.md` de la app. Es el estándar Carbón del 21 oct 2026. Hub (customer-hub) y Casa (carloscanal) no cambian de paleta: conservan el tema `anterior` (ver el README del kit).
+5. Copia `plantillas/alta-app/datos-confirmados.md` a `docs/datos-confirmados.md` de la app (Gonzalo, 3 nov 2026), sustituye los «TODO» con lo que ya conste en su `AGENTS.md` y quita las líneas que no apliquen. El bloque «## Datos confirmados» de `reglas-agentes.md` manda leerlo al empezar y actualizarlo al acabar (regla de las tres veces).
 
 ## 6. Workflow de Claude Code (solo si existe `.github/workflows/claude-code.yml`)
 

@@ -18,3 +18,7 @@ bun run lint && bun run comprobar:estilo && bun run typecheck && bun run test &&
 - Rama propia y PR contra main. Nunca push a main ni --force. No fusiones tú.
 - Un PR se aprueba cuando la CI y los tests están en verde y cumple docs/diseno.md. No hay revisión visual por PR (la de Monipenny fue única, en el primer PR).
 - PR corto: qué cambia y criterios cumplidos.
+
+## Datos confirmados
+
+- Al empezar, lee `docs/datos-confirmados.md`; al acabar, actualízalo en la misma PR. Solo se apunta lo que se ha comprobado tres veces, con la fecha en cada línea.
