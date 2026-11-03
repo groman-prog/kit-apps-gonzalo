@@ -10,6 +10,8 @@
 
 Reglas firmes desde el 17/10: toasts solo para Deshacer y errores; 44 px táctiles en móvil y `h-8` en escritorio; «·» prohibido en todas partes; y la frontera entre cambio menor e importante del §2.6.
 
+Regla fija desde el 3/11/2026 (aprobada por Gonzalo): las filas de listas y tablas van en columnas de ancho fijo, como en Linear, para que todo quede alineado.
+
 ## 1. Tokens
 
 **Color: paleta Carbón**
