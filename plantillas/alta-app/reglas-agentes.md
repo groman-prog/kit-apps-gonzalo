@@ -10,6 +10,10 @@
 
 - Al terminar cada tarea, añade al final de la descripción de la PR (y como comentario en la tarea de Linear si tienes acceso) una línea que empiece por «Lo que me costó:» con lo que te dificultó el trabajo (instrucciones confusas, datos que faltaban, contexto que no encontraste). Si no hubo nada, escribe «Lo que me costó: nada».
 
+## Datos confirmados (Gonzalo, 3 nov 2026)
+
+- Al empezar, lee `docs/datos-confirmados.md`; al acabar, actualízalo en la misma PR. Solo se apunta lo que se ha comprobado tres veces, con la fecha en cada línea.
+
 ## Zonas delicadas
 
 - Acceso e identidad: TODO (rutas de login, crear cuenta, restablecer contraseña, invitaciones, `src/integrations/supabase/`, `src/integrations/lovable/`). Si la app no tiene login: «esta app no tiene login; si una tarea lo pide, para y pregunta en la PR».
